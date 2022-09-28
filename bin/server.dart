@@ -3,6 +3,7 @@ import 'package:shelf/shelf.dart';
 import 'api/login/login_api.dart';
 import 'api/user/user.dart';
 import 'infra/server/custom_server.dart';
+import 'utils/custom_env.dart';
 
 // Configure routes.
 // final _router = Router()..get('/sobre', _rootHandler);
@@ -21,5 +22,9 @@ Future<void> main() async {
   var handler =
       Pipeline().addMiddleware(logRequests()).addHandler(cascadeHandler);
 
-  await CustomServer().initialize(handler);
+  await CustomServer().initialize(
+    handler: handler,
+    address: CustomEnv.get<String>(key: 'address'),
+    port: CustomEnv.get<int>(key: 'port'),
+  );
 }
