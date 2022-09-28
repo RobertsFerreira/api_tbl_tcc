@@ -14,7 +14,9 @@ class CustomEnv {
     List<String> linhas = (_readFile()).split('\n');
 
     _map = {
-      for (var linha in linhas) linha.split('=')[0]: linha.split('=')[1],
+      for (var linha in linhas)
+        linha.split('=')[0]:
+            linha.split('=')[1].replaceAll(String.fromCharCode(13), ''),
     };
   }
 
