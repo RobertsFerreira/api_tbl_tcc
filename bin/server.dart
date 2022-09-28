@@ -24,7 +24,7 @@ Future<void> main() async {
 
   await CustomServer().initialize(
     handler: handler,
-    address: CustomEnv.get<String>(key: 'address'),
-    port: CustomEnv.get<int>(key: 'port'),
+    address: CustomEnv.get<String>(key: 'server_address'),
+    port: CustomEnv.get<int>(key: 'server_port'),
   );
 }
