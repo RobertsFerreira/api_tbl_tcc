@@ -5,6 +5,15 @@ import 'parses/custom_parses.dart';
 class CustomEnv {
   static Map<String, String> _map = {};
 
+  static String _file = '';
+
+  CustomEnv._();
+
+  factory CustomEnv.fromFile(String file) {
+    _file = file;
+    return CustomEnv._();
+  }
+
   static get<T>({required String key}) {
     if (_map.isEmpty) _load();
     return _map[key]!.toParse(T);
@@ -21,6 +30,6 @@ class CustomEnv {
   }
 
   static String _readFile() {
-    return File('.env').readAsStringSync();
+    return File(_file).readAsStringSync();
   }
 }
