@@ -1,13 +1,13 @@
 import 'package:map_fields/map_fields.dart';
 
-import '../enums/enum_type_user.dart';
+import '../type_user/type_user_model.dart';
 
 class UserModel {
   final String id;
   final String idCompany;
   final String name;
   final String cpf;
-  final TypeUser typeUser;
+  final TypeUserModel typeUser;
 
   UserModel({
     required this.id,
@@ -19,15 +19,13 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     final map = MapFields.load(json);
-    final type = map.getString('type_user', '');
+    final type = (json['types_user'] ?? {});
     return UserModel(
       id: map.getString('id', ''),
       idCompany: map.getString('id_company', ''),
       name: map.getString('name', ''),
       cpf: map.getString('cpf', ''),
-      typeUser: type == TypeUser.aluno.descricao
-          ? TypeUser.aluno
-          : TypeUser.professor,
+      typeUser: TypeUserModel.fromMap(type),
     );
   }
 }
