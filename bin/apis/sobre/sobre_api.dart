@@ -1,7 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-class Sobre {
+class SobreApi {
   Handler get handler {
     Router router = Router();
 
