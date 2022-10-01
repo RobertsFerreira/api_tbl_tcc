@@ -1,2 +1,6 @@
 server_address=
 server_port=
+host_database=
+port_database=
+hasura_secret_key=
+hasura_secret=
