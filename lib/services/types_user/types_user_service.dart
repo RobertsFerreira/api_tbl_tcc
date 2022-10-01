@@ -1,11 +1,15 @@
+import 'dart:async';
+
+import 'package:map_fields/map_fields.dart';
+
+import '../../core/interfaces/clients/http_client.dart';
+import '../../core/interfaces/generic_service/generic_service.dart';
 import '../../models/type_user/type_user_model.dart';
-import '../interfaces/clients/http_client.dart';
-import '../interfaces/generic_service/generic_service.dart';
 
 class TypesUserService implements GenericService<TypeUserModel> {
-  final HttpClient client;
+  final HttpClient _client;
 
-  TypesUserService(this.client);
+  TypesUserService(this._client);
 
   @override
   Future<TypeUserModel> add(TypeUserModel t) {
@@ -29,12 +33,25 @@ class TypesUserService implements GenericService<TypeUserModel> {
   Future<List<TypeUserModel>> getAll() async {
     List<TypeUserModel> listTypes = [];
     try {
-      final result = await client.get('/get/types_users/all');
-      final types =
-          result.map<TypeUserModel>((e) => TypeUserModel.fromMap(e)).toList();
+      final result = await _client.get('get/types_users/all');
+
+      final map = MapFields.load(result);
+
+      final listTypesUser = map.getList<Map<String, dynamic>>('types_user', []);
+
+      final types = listTypesUser.map((e) => TypeUserModel.fromMap(e)).toList();
+
       listTypes = types;
+    } on InvalidMapStringObjectError {
+      rethrow;
+    } on MapFieldsErrorMissingRequiredField {
+      rethrow;
+    } on UnknownErrorMapFieldsError {
+      rethrow;
+    } on ConvertMapStringFieldError {
+      rethrow;
     } catch (e) {
-      print(e.toString());
+      rethrow;
     }
     return listTypes;
   }

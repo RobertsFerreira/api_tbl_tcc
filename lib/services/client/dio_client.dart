@@ -1,20 +1,20 @@
 import 'package:dio/dio.dart';
 
+import '../../core/interfaces/clients/http_client.dart';
 import '../../utils/custom_env.dart';
-import '../interfaces/clients/http_client.dart';
 
 class DioClient implements HttpClient {
   late Dio _dio;
 
   DioClient() {
     final hostDatabase = CustomEnv.get<String>(key: 'host_database');
-    final port = CustomEnv.get<String>(key: 'port');
+    final port = CustomEnv.get<String>(key: 'port_database');
     final hasuraSecretKey = CustomEnv.get<String>(key: 'hasura_secret_key');
     final hasuraSecret = CustomEnv.get<String>(key: 'hasura_secret');
     _dio = Dio(
       BaseOptions(
         headers: {hasuraSecretKey: hasuraSecret},
-        baseUrl: 'http://$hostDatabase:$port',
+        baseUrl: 'http://$hostDatabase:$port/api/rest/',
       ),
     );
   }
