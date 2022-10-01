@@ -44,4 +44,18 @@ void main() {
       expect(result, isList);
     });
   });
+
+  group('Grupo de testes de casos de erro', () {
+    test(
+        'Deve retornar um status code 500 caso de erro na busca dos tipos de usuários',
+        () async {
+      final url = Uri.parse('$urlBase/types_user');
+
+      final request = await httpClient.getUrl(url);
+
+      final response = await request.close();
+
+      expect(response.statusCode, 500);
+    });
+  });
 }
