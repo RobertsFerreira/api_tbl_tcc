@@ -4,18 +4,14 @@ import 'package:shelf/shelf.dart';
 
 Future<void> main() async {
   MapFieldsSettings.instance.setLanguage(MapFieldsLanguages.ptBr);
-
   CustomEnv.fromFile('.env-dev');
 
-  final HttpClient client = DioClient();
+  final i = Injects.init();
 
   var cascadeHandler = Cascade()
-      .add((LoginApi().handler))
-      .add(UserApi().handler)
-      .add(SobreApi().handler)
-      .add(
-        TypesUserApi(TypesUserService(client)).getHandler(),
-      )
+      .add(i.get<LoginApi>().handler)
+      .add(i.get<SobreApi>().handler)
+      .add(i.get<TypesUserApi>().getHandler())
       .handler;
 
   var handler = Pipeline()
