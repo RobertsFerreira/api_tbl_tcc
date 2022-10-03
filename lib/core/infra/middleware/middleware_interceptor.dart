@@ -4,7 +4,7 @@ import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 
 class MiddlewareInterceptor {
-  Middleware get middleware {
+  static Middleware get middleware {
     return createMiddleware(
       errorHandler: (e, s) {
         if (e is MapFieldsError) {
