@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/interfaces/clients/http_client.dart';
+import '../../core/models/errors/client/client_error.dart';
 import '../../utils/custom_env.dart';
 
 class DioClient implements HttpClient {
@@ -33,8 +34,12 @@ class DioClient implements HttpClient {
         queryParameters: queryParameters,
       );
       return response.data;
-    } on DioError {
-      rethrow;
+    } on DioError catch (e) {
+      throw ClientError(
+        message: e.message,
+        method: e.requestOptions.method,
+        statusCode: e.response?.statusCode ?? -1,
+      );
     } catch (e) {
       rethrow;
     }
