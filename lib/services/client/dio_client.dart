@@ -1,3 +1,4 @@
+import 'package:api_tbl_tcc/core/models/errors/generic_error/generic_error.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/interfaces/clients/http_client.dart';
@@ -21,9 +22,23 @@ class DioClient implements HttpClient {
   }
 
   @override
-  Future delete(String url, {Map<String, dynamic>? queryParameters}) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future delete(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final response = await _dio.delete(
+        url,
+        queryParameters: queryParameters,
+      );
+      return response.data;
+    } on DioError catch (e) {
+      throw ClientError(
+        message: e.toString(),
+        method: e.requestOptions.method,
+        statusCode: e.response?.statusCode ?? -1,
+      );
+    }
   }
 
   @override
@@ -41,19 +56,51 @@ class DioClient implements HttpClient {
         statusCode: e.response?.statusCode ?? -1,
       );
     } catch (e) {
-      rethrow;
+      throw UnknownError(
+        message: e.toString(),
+      );
     }
   }
 
   @override
   Future post(String url, {body}) {
-    // TODO: implement post
-    throw UnimplementedError();
+    try {
+      final response = _dio.post(
+        url,
+        data: body,
+      );
+      return response;
+    } on DioError catch (e) {
+      throw ClientError(
+        message: e.message,
+        method: e.requestOptions.method,
+        statusCode: e.response?.statusCode ?? -1,
+      );
+    } catch (e) {
+      throw UnknownError(
+        message: e.toString(),
+      );
+    }
   }
 
   @override
   Future put(String url, {body}) {
-    // TODO: implement put
-    throw UnimplementedError();
+    try {
+      final response = _dio.put(
+        url,
+        data: body,
+      );
+      return response;
+    } on DioError catch (e) {
+      throw ClientError(
+        message: e.message,
+        method: e.requestOptions.method,
+        statusCode: e.response?.statusCode ?? -1,
+      );
+    } catch (e) {
+      throw UnknownError(
+        message: e.toString(),
+      );
+    }
   }
 }
