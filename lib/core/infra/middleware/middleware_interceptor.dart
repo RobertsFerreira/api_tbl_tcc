@@ -15,6 +15,7 @@ class MiddlewareInterceptor {
               'erro': e.toString(),
               'message': 'Erro no processamento dos campos do json',
               'stacktrace': s.toString(),
+              'type': e.runtimeType,
             }),
           );
         } else if (e is ClientError) {
@@ -24,6 +25,7 @@ class MiddlewareInterceptor {
                   'Erro no client de conectar na base de dados: ${e.message}',
               'message': 'Status code: ${e.statusCode} - Method: ${e.method}',
               'stacktrace': s.toString(),
+              'type': e.runtimeType,
             }),
           );
         } else {
@@ -32,6 +34,7 @@ class MiddlewareInterceptor {
               'erro': e.toString(),
               'message': 'Erro interno desconhecido no servidor',
               'stacktrace': s.toString(),
+              'type': e.runtimeType,
             }),
           );
         }
