@@ -11,3 +11,9 @@ class UnknownError extends GenericError {
     required super.message,
   });
 }
+
+class InvalidIdCompany extends GenericError {
+  InvalidIdCompany({
+    required super.message,
+  });
+}
