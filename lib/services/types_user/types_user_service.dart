@@ -12,7 +12,7 @@ class TypesUserService implements GenericService<TypeUserModel> {
   TypesUserService(this._client);
 
   @override
-  Future<TypeUserModel> add(TypeUserModel t) {
+  Future<TypeUserModel> insert(TypeUserModel t) {
     throw UnimplementedError();
   }
 

@@ -12,7 +12,7 @@ class UserService implements GenericService<UserDefault> {
   UserService(this._client);
 
   @override
-  Future<UserDefault> add(UserDefault user) {
+  Future<UserDefault> insert(UserDefault user) {
     // TODO: implement add
     throw UnimplementedError();
   }
