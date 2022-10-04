@@ -13,19 +13,16 @@ class TypesUserService implements GenericService<TypeUserModel> {
 
   @override
   Future<TypeUserModel> add(TypeUserModel t) {
-    // TODO: implement add
     throw UnimplementedError();
   }
 
   @override
   Future<TypeUserModel> delete(int id) {
-    // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
   Future<TypeUserModel> get(int id) {
-    // TODO: implement get
     throw UnimplementedError();
   }
 
@@ -58,7 +55,11 @@ class TypesUserService implements GenericService<TypeUserModel> {
 
   @override
   Future<TypeUserModel> update(TypeUserModel t) {
-    // TODO: implement update
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<TypeUserModel>> getAllForCompany({required String idCompany}) {
     throw UnimplementedError();
   }
 }

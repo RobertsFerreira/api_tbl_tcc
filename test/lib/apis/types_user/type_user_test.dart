@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 
-import '../../../utils/pathServer.dart';
+import '../../../utils/path_server.dart';
 
 void main() {
   late HttpClient httpClient;
