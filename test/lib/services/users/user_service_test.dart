@@ -31,7 +31,7 @@ void main() {
         (_) async => response,
       );
 
-      final result = await userService.getAllForCompany(idCompany: '');
+      final result = await userService.get(idCompany: '');
 
       expect(result, isA<List<UserModel>>());
     });
