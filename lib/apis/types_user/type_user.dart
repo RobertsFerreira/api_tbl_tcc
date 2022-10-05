@@ -16,7 +16,7 @@ class TypesUserApi extends Api {
   Handler getHandler({List<Middleware>? middlewares}) {
     Router router = Router();
 
-    router.get('/types_user', (Request req) async {
+    router.get('v1/types_user', (Request req) async {
       final List<TypeUserModel> types = await _typesUserService.get();
       if (types.isEmpty) {
         return Response.notFound(
