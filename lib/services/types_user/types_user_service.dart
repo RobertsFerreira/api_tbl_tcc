@@ -4,6 +4,7 @@ import 'package:map_fields/map_fields.dart';
 
 import '../../core/interfaces/clients/http_client.dart';
 import '../../core/interfaces/generic_service/generic_service.dart';
+import '../../core/models/errors/client/client_error.dart';
 import '../../models/type_user/type_user_model.dart';
 
 class TypesUserService implements GenericService<TypeUserModel> {
@@ -12,25 +13,25 @@ class TypesUserService implements GenericService<TypeUserModel> {
   TypesUserService(this._client);
 
   @override
-  Future<TypeUserModel> insert(TypeUserModel t) {
+  Future<bool> insert(TypeUserModel t) {
     throw UnimplementedError();
   }
 
   @override
-  Future<TypeUserModel> delete(int id) {
+  Future<bool> delete(int id) {
     throw UnimplementedError();
   }
 
   @override
-  Future<TypeUserModel> get(int id) {
+  Future<TypeUserModel> getById(int id) {
     throw UnimplementedError();
   }
 
   @override
-  Future<List<TypeUserModel>> getAll() async {
+  Future<List<TypeUserModel>> get({String? idCompany}) async {
     List<TypeUserModel> listTypes = [];
     try {
-      final result = await _client.get('get/types_users/all');
+      final result = await _client.get('types_users');
 
       final map = MapFields.load(result);
 
@@ -39,13 +40,9 @@ class TypesUserService implements GenericService<TypeUserModel> {
       final types = listTypesUser.map((e) => TypeUserModel.fromMap(e)).toList();
 
       listTypes = types;
-    } on InvalidMapStringObjectError {
+    } on MapFieldsError {
       rethrow;
-    } on MapFieldsErrorMissingRequiredField {
-      rethrow;
-    } on UnknownErrorMapFieldsError {
-      rethrow;
-    } on ConvertMapStringFieldError {
+    } on ClientError {
       rethrow;
     } catch (e) {
       rethrow;
@@ -54,12 +51,7 @@ class TypesUserService implements GenericService<TypeUserModel> {
   }
 
   @override
-  Future<TypeUserModel> update(TypeUserModel t) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<TypeUserModel>> getAllForCompany({required String idCompany}) {
+  Future<bool> update(TypeUserModel t) {
     throw UnimplementedError();
   }
 }
