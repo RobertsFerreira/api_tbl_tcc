@@ -55,6 +55,8 @@ class UserService implements GenericService<UserDefault> {
       rethrow;
     } on MapFieldsError {
       rethrow;
+    } on InvalidArgumentHasura {
+      rethrow;
     } catch (e) {
       rethrow;
     }
