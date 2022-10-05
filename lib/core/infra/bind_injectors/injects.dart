@@ -10,11 +10,17 @@ class Injects {
   static BindInjectors init() {
     final i = BindInjectors();
     i.bind<HttpClient>(() => DioClient());
-    i.bind<GenericService<TypeUserModel>>(() => TypesUserService(i()));
-    i.bind<TypesUserApi>(() => TypesUserApi(i()));
+    i.bind<GenericService<TypeUserModel>>(
+      () => TypesUserService(i.get<HttpClient>()),
+    );
+    i.bind<TypesUserApi>(
+      () => TypesUserApi(i.get<GenericService<TypeUserModel>>()),
+    );
     i.bind<LoginApi>(() => LoginApi());
     i.bind<SobreApi>(() => SobreApi());
-    i.bind<GenericService<UserDefault>>(() => UserService(i()));
+    i.bind<GenericService<UserDefault>>(
+      () => UserService(i()),
+    );
     return i;
   }
 }
