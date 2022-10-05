@@ -4,7 +4,7 @@ String get userForCompanyResponse => '''
     "user": [
       {
         "id": "bab4ab31-d22c-4180-9b53-e06390bd652b",
-        "name": "robert",
+        "name": "Robert",
         "cpf": "1234567890",
         "birth_date": "2000-12-25",
         "id_company": "1566d92f-9119-44d5-830e-9c3f94eb657c",
@@ -17,3 +17,25 @@ String get userForCompanyResponse => '''
   }
 }
 ''';
+
+String get responseInserterUserResponse => '''
+{
+  "data": {
+    "insert_user": {
+      "affected_rows": 1
+    }
+  }
+}''';
+
+String get responseInserterUserResponseError => '''
+{
+  "errors": [
+    {
+      "extensions": {
+        "code": "constraint-violation",
+        "path": "\$.selectionSet.insert_user.args.objects"
+      },
+      "message": "Uniqueness violation. duplicate key value violates unique constraint "user_name_cpf_key""
+    }
+  ]
+}''';
