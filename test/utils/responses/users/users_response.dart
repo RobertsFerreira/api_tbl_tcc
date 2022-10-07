@@ -18,7 +18,7 @@ String get userForCompanyResponse => '''
 }
 ''';
 
-String get responseInserterUserResponse => '''
+String get responseInserterUser => '''
 {
   "data": {
     "insert_user": {
@@ -27,7 +27,7 @@ String get responseInserterUserResponse => '''
   }
 }''';
 
-String get responseInserterUserResponseError => '''
+String get responseInserterUserError => '''
 {
   "errors": [
     {
@@ -35,7 +35,16 @@ String get responseInserterUserResponseError => '''
         "code": "constraint-violation",
         "path": "\$.selectionSet.insert_user.args.objects"
       },
-      "message": "Uniqueness violation. duplicate key value violates unique constraint "user_name_cpf_key""
+      "message": "Uniqueness violation. duplicate key value violates unique constraint 'user_name_cpf_key'"
     }
   ]
+}''';
+
+String get responseUpdateUser => '''
+{
+  "data": {
+    "update_user": {
+      "affected_rows": 1
+    }
+  }
 }''';
