@@ -9,17 +9,25 @@ class NewUserModel extends UserDefault {
     required super.birthDate,
     required super.idCompany,
     required super.typeUser,
+    required super.ativo,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'cpf': cpf,
-      'birth_date': birthDate,
+      'birth_date': birthDate.toBirthDate().toString(),
       'id_company': idCompany,
       'id_type_user': typeUser.id,
+      'situacao': ativo,
     };
   }
 
   String toJson() => jsonEncode(toMap());
+}
+
+extension ToBirthDate on DateTime {
+  String toBirthDate() {
+    return '$year-$month-$day';
+  }
 }
