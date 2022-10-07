@@ -24,25 +24,7 @@ class UserService implements GenericService<UserDefault> {
         body: userMap,
       );
 
-      final data = response['data'];
-
-      if (data == null) {
-        final messageError = HelperHasura.returnErrorHasura(response);
-        throw InvalidArgumentHasura(message: messageError);
-      }
-
-      final mapResponse = MapFields.load(data['insert_user'] ?? {});
-      final result = mapResponse.getInt('affected_rows', -1);
-      if (result == -1) {
-        throw MapFieldsErrorMissingRequiredField('affected_rows');
-      } else if (result == 1) {
-        return true;
-      } else {
-        throw UnknownError(
-          message:
-              'Erro ao inserir usuário, houve mais de um usuário inserido: $result',
-        );
-      }
+      return HelperHasura.returnResponse(response, 'insert_user');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
@@ -65,24 +47,7 @@ class UserService implements GenericService<UserDefault> {
           'id': id,
         },
       );
-      final data = response['data'];
-
-      if (data == null) {
-        final messageError = HelperHasura.returnErrorHasura(response);
-        throw InvalidArgumentHasura(message: messageError);
-      }
-      final mapResponse = MapFields.load(data['update_user'] ?? {});
-      final result = mapResponse.getInt('affected_rows', -1);
-      if (result == -1) {
-        throw MapFieldsErrorMissingRequiredField('affected_rows');
-      } else if (result == 1) {
-        return true;
-      } else {
-        throw UnknownError(
-          message:
-              'Erro ao deletar usuário, houve mais de um usuário deletado: $result',
-        );
-      }
+      return HelperHasura.returnResponse(response, 'update_user');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
@@ -146,24 +111,7 @@ class UserService implements GenericService<UserDefault> {
         body: userMap,
       );
 
-      final data = response['data'];
-      if (data == null) {
-        final messageError = HelperHasura.returnErrorHasura(response);
-        throw InvalidArgumentHasura(message: messageError);
-      }
-
-      final mapResponse = MapFields.load(data['update_user'] ?? {});
-      final result = mapResponse.getInt('affected_rows', -1);
-      if (result == -1) {
-        throw MapFieldsErrorMissingRequiredField('affected_rows');
-      } else if (result == 1) {
-        return true;
-      } else {
-        throw UnknownError(
-          message:
-              'Erro ao atualizar usuário, houve mais de um usuário atualizado: $result',
-        );
-      }
+      return HelperHasura.returnResponse(response, 'update_user');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
