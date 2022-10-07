@@ -8,6 +8,7 @@ import 'package:map_fields/map_fields.dart';
 import '../../core/interfaces/clients/http_client.dart';
 import '../../core/interfaces/generic_service/generic_service.dart';
 import '../../core/models/errors/client/client_error.dart';
+import '../../utils/hasura/helper_hasura.dart';
 
 class UserService implements GenericService<UserDefault> {
   final HttpClient _client;
@@ -19,23 +20,14 @@ class UserService implements GenericService<UserDefault> {
     try {
       final userMap = (user as NewUserModel).toJson();
       final response = await _client.post(
-        'users',
+        'user',
         body: userMap,
       );
 
       final data = response['data'];
 
       if (data == null) {
-        final errors = response['errors'];
-        final mapErrors = MapFields.load(errors);
-        final listErros = mapErrors.getList<Map<String, dynamic>>("errors");
-        String messageError = "";
-        for (var error in listErros) {
-          final mapError = MapFields.load(error);
-          final message = mapError.getString("message");
-          final index = listErros.indexOf(error);
-          messageError += "Erro $index: $message\n";
-        }
+        final messageError = HelperHasura.returnErrorHasura(response);
         throw InvalidArgumentHasura(message: messageError);
       }
 
@@ -57,15 +49,51 @@ class UserService implements GenericService<UserDefault> {
       rethrow;
     } on InvalidArgumentHasura {
       rethrow;
+    } on UnknownError {
+      rethrow;
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<bool> delete(int id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<bool> delete(int id) async {
+    try {
+      final response = await _client.delete(
+        'user',
+        queryParameters: {
+          'id': id,
+        },
+      );
+      final data = response['data'];
+
+      if (data == null) {
+        final messageError = HelperHasura.returnErrorHasura(response);
+        throw InvalidArgumentHasura(message: messageError);
+      }
+      final mapResponse = MapFields.load(data['update_user'] ?? {});
+      final result = mapResponse.getInt('affected_rows', -1);
+      if (result == -1) {
+        throw MapFieldsErrorMissingRequiredField('affected_rows');
+      } else if (result == 1) {
+        return true;
+      } else {
+        throw UnknownError(
+          message:
+              'Erro ao deletar usuário, houve mais de um usuário deletado: $result',
+        );
+      }
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidArgumentHasura {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -81,7 +109,7 @@ class UserService implements GenericService<UserDefault> {
     List<UserDefault> listOfUsers = [];
     try {
       final result = await _client.get(
-        'users',
+        'user',
         queryParameters: {
           'id_company': idCompany,
         },
@@ -94,13 +122,11 @@ class UserService implements GenericService<UserDefault> {
       final users = listUsers.map((e) => UserModel.fromMap(e)).toList();
 
       listOfUsers = users;
-    } on InvalidMapStringObjectError {
+    } on MapFieldsError {
       rethrow;
-    } on MapFieldsErrorMissingRequiredField {
+    } on ClientError {
       rethrow;
-    } on UnknownErrorMapFieldsError {
-      rethrow;
-    } on ConvertMapStringFieldError {
+    } on UnknownError {
       rethrow;
     } on InvalidIdCompany {
       rethrow;
@@ -111,8 +137,43 @@ class UserService implements GenericService<UserDefault> {
   }
 
   @override
-  Future<bool> update(UserDefault user) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<bool> update(UserDefault user) async {
+    try {
+      final userMap = (user as UserModel).toJson();
+
+      final response = await _client.put(
+        'user',
+        body: userMap,
+      );
+
+      final data = response['data'];
+      if (data == null) {
+        final messageError = HelperHasura.returnErrorHasura(response);
+        throw InvalidArgumentHasura(message: messageError);
+      }
+
+      final mapResponse = MapFields.load(data['update_user'] ?? {});
+      final result = mapResponse.getInt('affected_rows', -1);
+      if (result == -1) {
+        throw MapFieldsErrorMissingRequiredField('affected_rows');
+      } else if (result == 1) {
+        return true;
+      } else {
+        throw UnknownError(
+          message:
+              'Erro ao atualizar usuário, houve mais de um usuário atualizado: $result',
+        );
+      }
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidArgumentHasura {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
