@@ -6,6 +6,7 @@ class UserDefault {
   final DateTime birthDate;
   final String idCompany;
   final TypeUserModel typeUser;
+  final bool ativo;
 
   UserDefault({
     required this.name,
@@ -13,5 +14,6 @@ class UserDefault {
     required this.birthDate,
     required this.idCompany,
     required this.typeUser,
+    required this.ativo,
   });
 }
