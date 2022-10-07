@@ -3,6 +3,7 @@
         "descricao",
         "hasura",
         "middlewares",
-        "mocktail"
+        "mocktail",
+        "situacao"
     ]
 }
