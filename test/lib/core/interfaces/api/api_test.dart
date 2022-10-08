@@ -22,16 +22,4 @@ void main() {
     expect(handler, isNotNull);
     expect(handler, isA<FutureOr<Response> Function(Request)>());
   });
-
-  test('Deve retornar uma lista de middlewares na pipeline', () {
-    final api = ApiMock();
-    final handler = api.createHandler(
-      router: api.getHandler(),
-      middlewares: [
-        logRequests(),
-      ],
-    );
-    expect(handler, isNotNull);
-    expect(handler, isA<FutureOr<Response> Function(Request)>());
-  });
 }

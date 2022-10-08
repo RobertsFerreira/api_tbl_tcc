@@ -29,7 +29,7 @@ void main() {
         (_) async => response,
       );
 
-      final result = await typesUserService.getAll();
+      final result = await typesUserService.get();
 
       expect(result, isA<List<TypeUserModel>>());
     });
@@ -41,7 +41,7 @@ void main() {
       ).thenThrow(InvalidMapStringObjectError());
 
       try {
-        await typesUserService.getAll();
+        await typesUserService.get();
       } catch (e) {
         expect(e, isA<InvalidMapStringObjectError>());
       }
@@ -54,7 +54,7 @@ void main() {
       ).thenThrow(MapFieldsErrorMissingRequiredField('teste'));
 
       try {
-        await typesUserService.getAll();
+        await typesUserService.get();
       } catch (e) {
         expect(e, isA<MapFieldsErrorMissingRequiredField>());
       }
@@ -65,7 +65,7 @@ void main() {
       ).thenThrow(UnknownErrorMapFieldsError('teste', Exception()));
 
       try {
-        await typesUserService.getAll();
+        await typesUserService.get();
       } catch (e) {
         expect(e, isA<UnknownErrorMapFieldsError>());
       }
@@ -76,7 +76,7 @@ void main() {
       ).thenThrow(ConvertMapStringFieldError('teste', 'teste'));
 
       try {
-        await typesUserService.getAll();
+        await typesUserService.get();
       } catch (e) {
         expect(e, isA<ConvertMapStringFieldError>());
       }

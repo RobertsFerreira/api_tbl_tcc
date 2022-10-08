@@ -1,9 +1,9 @@
 import 'dart:async';
 
 abstract class GenericService<T> {
-  Future<List<T>> getAll();
-  Future<T> get(int id);
-  Future<T> add(T t);
-  Future<T> update(T t);
-  Future<T> delete(int id);
+  Future<List<T>> get({String? idCompany});
+  Future<T> getById(String id);
+  Future<bool> insert(T t);
+  Future<bool> update(T t);
+  Future<bool> delete(String id);
 }

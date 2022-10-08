@@ -3,6 +3,9 @@
         "descricao",
         "hasura",
         "middlewares",
-        "mocktail"
+        "mocktail",
+        "sigint",
+        "sigterm",
+        "situacao"
     ]
 }

@@ -3,6 +3,8 @@ import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 
 Future<void> main() async {
+  print('netstat -a -o | find "8000"');
+
   MapFieldsSettings.instance.setLanguage(MapFieldsLanguages.ptBr);
   CustomEnv.fromFile('.env-dev');
 
@@ -12,6 +14,7 @@ Future<void> main() async {
       .add(i.get<LoginApi>().handler)
       .add(i.get<SobreApi>().handler)
       .add(i.get<TypesUserApi>().getHandler())
+      .add(i.get<UserApi>().getHandler())
       .handler;
 
   var handler = Pipeline()
