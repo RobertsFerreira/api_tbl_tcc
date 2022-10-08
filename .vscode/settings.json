@@ -4,6 +4,8 @@
         "hasura",
         "middlewares",
         "mocktail",
+        "sigint",
+        "sigterm",
         "situacao"
     ]
 }
