@@ -1,7 +1,6 @@
 String get userForCompanyResponse => '''
 {
-  "data": {
-    "user": [
+  "user": [
       {
         "id": "bab4ab31-d22c-4180-9b53-e06390bd652b",
         "name": "Robert",
@@ -14,17 +13,14 @@ String get userForCompanyResponse => '''
         }
       }
     ]
-  }
 }
 ''';
 
 String get responseInserterUser => '''
 {
-  "data": {
-    "insert_user": {
+  "insert_user": {
       "affected_rows": 1
     }
-  }
 }''';
 
 String get responseInserterUserError => '''
@@ -42,9 +38,7 @@ String get responseInserterUserError => '''
 
 String get responseUpdateUser => '''
 {
-  "data": {
     "update_user": {
       "affected_rows": 1
     }
-  }
 }''';

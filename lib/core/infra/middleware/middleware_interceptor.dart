@@ -21,8 +21,7 @@ class MiddlewareInterceptor {
         } else if (e is ClientError) {
           return Response.internalServerError(
             body: jsonEncode({
-              'erro':
-                  'Erro no client de conectar na base de dados: ${e.message}',
+              'erro': e.message,
               'message': 'Status code: ${e.statusCode} - Method: ${e.method}',
               'stacktrace': s.toString(),
               'type': e.runtimeType.toString(),

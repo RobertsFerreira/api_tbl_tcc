@@ -16,19 +16,17 @@ class TypesUserApi extends Api {
   Handler getHandler({List<Middleware>? middlewares}) {
     Router router = Router();
 
-    router.get('/v1/types_user', (Request req) async {
+    router.get('/types_user', (Request req) async {
       final List<TypeUserModel> types = await _typesUserService.get();
       if (types.isEmpty) {
-        return Response.notFound(
-          jsonEncode(
-            {
-              'message': 'Nenhum tipo de usuário encontrado',
-            },
-          ),
-        );
+        return Response(204);
       } else {
         final typesMap = types.map((e) => e.toMap()).toList();
-        final response = jsonEncode(typesMap);
+        final response = jsonEncode(
+          {
+            'types_user': typesMap,
+          },
+        );
         return Response.ok(response);
       }
     });

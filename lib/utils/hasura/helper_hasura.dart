@@ -4,22 +4,38 @@ import '../../core/models/errors/arguments/invalid_argument_hasura.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
 
 class HelperHasura {
-  static bool returnResponse(dynamic response, String key) {
-    final data = response['data'];
-    if (data == null) {
+  static bool returnResponseBool(
+    dynamic response,
+    String key, {
+    bool multipleAffectedRows = false,
+  }) {
+    final data = response['error'];
+    if (data != null) {
       final messageError = _returnErrorHasura(response);
       throw InvalidArgumentHasura(message: messageError);
     }
-    final mapResponse = MapFields.load(data[key] ?? {});
+    final mapResponse = MapFields.load(response[key] ?? {});
     final result = mapResponse.getInt('affected_rows', -1);
     if (result == -1) {
       throw MapFieldsErrorMissingRequiredField('affected_rows');
-    } else if (result == 1) {
+    } else if (result == 1 && !multipleAffectedRows) {
+      return true;
+    }
+    if (result == 0) {
+      return false;
+    } else if (result >= 1 && multipleAffectedRows) {
       return true;
     } else {
+      String message = '';
+      if (key.contains('insert')) {
+        message = 'Erro ao inserir';
+      } else if (key.contains('update')) {
+        message = 'Erro ao atualizar';
+      } else if (key.contains('delete')) {
+        message = 'Erro ao deletar';
+      }
       throw UnknownError(
-        message:
-            'Erro ao deletar usuário, houve mais de um usuário deletado: $result',
+        message: '$message usuário, houve mais de um usuário deletado: $result',
       );
     }
   }

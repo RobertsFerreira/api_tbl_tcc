@@ -1,13 +1,10 @@
 import 'dart:convert';
 
 import 'package:api_tbl_tcc/core/interfaces/clients/http_client.dart';
-import 'package:api_tbl_tcc/core/models/errors/arguments/invalid_argument_hasura.dart';
-import 'package:api_tbl_tcc/core/models/errors/generic_error/generic_error.dart';
 import 'package:api_tbl_tcc/models/type_user/type_user_model.dart';
 import 'package:api_tbl_tcc/models/user/new_user_model.dart';
 import 'package:api_tbl_tcc/models/user/user_model.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
-import 'package:map_fields/map_fields.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -43,7 +40,9 @@ void main() {
   });
 
   group('Conjuntos de teste para inserir um usuário', () {
-    test('Deve retornar o numero de registros afetados = 1', () async {
+    test(
+        'Deve retornar o numero de registros afetados = 1  ao inserir um usuário',
+        () async {
       final response = jsonDecode(responseInserterUser);
       when(
         () => client.post(any(), body: any(named: 'body')),
@@ -51,6 +50,31 @@ void main() {
 
       final result = await userService.insert(
         NewUserModel(
+          name: 'Teste',
+          cpf: '',
+          birthDate: DateTime.now(),
+          idCompany: '',
+          typeUser: '',
+        ),
+      );
+
+      expect(result, isA<bool>());
+      expect(result, true);
+    });
+  });
+
+  group('Conjuntos de teste para fazer update de um usuário', () {
+    test(
+        'Deve retornar o numero de registros afetados = 1 ao atualizar um usuário',
+        () async {
+      final response = jsonDecode(responseUpdateUser);
+      when(
+        () => client.put(any(), body: any(named: 'body')),
+      ).thenAnswer((_) async => response);
+
+      final result = await userService.update(
+        UserModel(
+          id: '',
           name: 'Teste',
           cpf: '',
           birthDate: DateTime.now(),
@@ -63,76 +87,24 @@ void main() {
       expect(result, isA<bool>());
       expect(result, true);
     });
+  });
 
-    test('Deve retornar um erro por ter sido passado um argumento inválido',
+  group('Conjuntos de teste para fazer delete de um usuário', () {
+    test(
+        'Deve retornar o numero de registros afetados = 1 ao deletar um usuário',
         () async {
-      try {
-        final response = jsonDecode(responseInserterUserError);
-        when(
-          () => client.post(any(), body: any(named: 'body')),
-        ).thenAnswer((_) async => response);
+      final response = jsonDecode(responseUpdateUser);
+      when(
+        () => client.delete(
+          any(),
+          queryParameters: any(named: 'queryParameters'),
+        ),
+      ).thenAnswer((_) async => response);
 
-        await userService.insert(
-          NewUserModel(
-            name: 'Teste',
-            cpf: '',
-            birthDate: DateTime.now(),
-            idCompany: '',
-            typeUser: TypeUserModel(id: '', name: ''),
-            ativo: false,
-          ),
-        );
-      } catch (e) {
-        expect(e, isA<InvalidArgumentHasura>());
-      }
-    });
+      final result = await userService.delete('');
 
-    test('Deve retornar um erro por a um erro no campo do retorno do hasura',
-        () async {
-      try {
-        final response = jsonDecode(
-            responseInserterUser.replaceAll('affected_rows', 'affected_row'));
-        when(
-          () => client.post(any(), body: any(named: 'body')),
-        ).thenAnswer((_) async => response);
-
-        await userService.insert(
-          NewUserModel(
-            name: 'Teste',
-            cpf: '',
-            birthDate: DateTime.now(),
-            idCompany: '',
-            typeUser: TypeUserModel(id: '', name: ''),
-            ativo: false,
-          ),
-        );
-      } catch (e) {
-        expect(e, isA<MapFieldsErrorMissingRequiredField>());
-      }
-    });
-
-    test('Deve retornar um erro por ter sido afetado mais de 1 ', () async {
-      try {
-        final response = jsonDecode(
-          responseInserterUser.replaceAll('1', '2'),
-        );
-        when(
-          () => client.post(any(), body: any(named: 'body')),
-        ).thenAnswer((_) async => response);
-
-        await userService.insert(
-          NewUserModel(
-            name: 'Teste',
-            cpf: '',
-            birthDate: DateTime.now(),
-            idCompany: '',
-            typeUser: TypeUserModel(id: '', name: ''),
-            ativo: false,
-          ),
-        );
-      } catch (e) {
-        expect(e, isA<UnknownError>());
-      }
+      expect(result, isA<bool>());
+      expect(result, true);
     });
   });
 }

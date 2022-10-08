@@ -19,7 +19,10 @@ class Injects {
     i.bind<LoginApi>(() => LoginApi());
     i.bind<SobreApi>(() => SobreApi());
     i.bind<GenericService<UserDefault>>(
-      () => UserService(i()),
+      () => UserService(i.get<HttpClient>()),
+    );
+    i.bind<UserApi>(
+      () => UserApi(i.get<GenericService<UserDefault>>()),
     );
     return i;
   }

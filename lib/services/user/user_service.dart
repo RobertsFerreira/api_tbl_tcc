@@ -18,13 +18,13 @@ class UserService implements GenericService<UserDefault> {
   @override
   Future<bool> insert(UserDefault user) async {
     try {
-      final userMap = (user as NewUserModel).toJson();
+      final userMap = (user as NewUserModel).toMap();
       final response = await _client.post(
         'user',
         body: userMap,
       );
 
-      return HelperHasura.returnResponse(response, 'insert_user');
+      return HelperHasura.returnResponseBool(response, 'insert_user');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
@@ -39,7 +39,7 @@ class UserService implements GenericService<UserDefault> {
   }
 
   @override
-  Future<bool> delete(int id) async {
+  Future<bool> delete(String id) async {
     try {
       final response = await _client.delete(
         'user',
@@ -47,7 +47,7 @@ class UserService implements GenericService<UserDefault> {
           'id': id,
         },
       );
-      return HelperHasura.returnResponse(response, 'update_user');
+      return HelperHasura.returnResponseBool(response, 'update_user');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
@@ -62,7 +62,7 @@ class UserService implements GenericService<UserDefault> {
   }
 
   @override
-  Future<UserDefault> getById(int id) {
+  Future<UserDefault> getById(String id) {
     // TODO: implement get
     throw UnimplementedError();
   }
@@ -80,9 +80,9 @@ class UserService implements GenericService<UserDefault> {
         },
       );
 
-      final map = MapFields.load(result['data'] ?? {});
+      final map = MapFields.load(result);
 
-      final listUsers = map.getList<Map<String, dynamic>>('users', []);
+      final listUsers = map.getList<Map<String, dynamic>>('user', []);
 
       final users = listUsers.map((e) => UserModel.fromMap(e)).toList();
 
@@ -104,14 +104,14 @@ class UserService implements GenericService<UserDefault> {
   @override
   Future<bool> update(UserDefault user) async {
     try {
-      final userMap = (user as UserModel).toJson();
+      final userMap = (user as UserModel).toUpdate();
 
       final response = await _client.put(
         'user',
         body: userMap,
       );
 
-      return HelperHasura.returnResponse(response, 'update_user');
+      return HelperHasura.returnResponseBool(response, 'update_user');
     } on ClientError {
       rethrow;
     } on MapFieldsError {

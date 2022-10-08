@@ -32,12 +32,8 @@ class DioClient implements HttpClient {
         queryParameters: queryParameters,
       );
       return response.data;
-    } on DioError catch (e) {
-      throw ClientError(
-        message: e.toString(),
-        method: e.requestOptions.method,
-        statusCode: e.response?.statusCode ?? -1,
-      );
+    } catch (e) {
+      _getError(e);
     }
   }
 
@@ -49,55 +45,45 @@ class DioClient implements HttpClient {
         queryParameters: queryParameters,
       );
       return response.data;
-    } on DioError catch (e) {
-      throw ClientError(
-        message: e.message,
-        method: e.requestOptions.method,
-        statusCode: e.response?.statusCode ?? -1,
-      );
     } catch (e) {
-      throw UnknownError(
-        message: e.toString(),
-      );
+      _getError(e);
     }
   }
 
   @override
-  Future post(String url, {body}) {
+  Future post(String url, {body}) async {
     try {
-      final response = _dio.post(
+      final response = await _dio.post(
         url,
         data: body,
       );
-      return response;
-    } on DioError catch (e) {
-      throw ClientError(
-        message: e.message,
-        method: e.requestOptions.method,
-        statusCode: e.response?.statusCode ?? -1,
-      );
+      return response.data;
     } catch (e) {
-      throw UnknownError(
-        message: e.toString(),
-      );
+      _getError(e);
     }
   }
 
   @override
-  Future put(String url, {body}) {
+  Future put(String url, {body}) async {
     try {
-      final response = _dio.put(
+      final response = await _dio.put(
         url,
         data: body,
       );
-      return response;
-    } on DioError catch (e) {
+      return response.data;
+    } catch (e) {
+      _getError(e);
+    }
+  }
+
+  _getError(dynamic e) {
+    if (e is DioError) {
       throw ClientError(
-        message: e.message,
+        message: e.response == null ? e.message : e.response?.data['error'],
         method: e.requestOptions.method,
         statusCode: e.response?.statusCode ?? -1,
       );
-    } catch (e) {
+    } else {
       throw UnknownError(
         message: e.toString(),
       );

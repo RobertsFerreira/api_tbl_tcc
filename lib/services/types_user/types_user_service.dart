@@ -18,12 +18,12 @@ class TypesUserService implements GenericService<TypeUserModel> {
   }
 
   @override
-  Future<bool> delete(int id) {
+  Future<bool> delete(String id) {
     throw UnimplementedError();
   }
 
   @override
-  Future<TypeUserModel> getById(int id) {
+  Future<TypeUserModel> getById(String id) {
     throw UnimplementedError();
   }
 
