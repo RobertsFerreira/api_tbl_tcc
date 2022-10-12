@@ -29,7 +29,7 @@ class UserModel extends UserDefault {
       birthDate: map.getDateTime('birth_date', DateTime.now()),
       idCompany: map.getString('id_company', ''),
       typeUser: TypeUserModel.fromMap(type),
-      enabled: map.getBool('enabled', true),
+      enabled: map.getBool('enabled', false),
     );
   }
 
