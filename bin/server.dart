@@ -9,7 +9,9 @@ Future<void> main() async {
 
   final port = CustomEnv.get<int>(key: 'server_port');
 
-  print('netstat -a -o | find "$port');
+  print('netstat -a -o | find "$port" para windows');
+
+  print('lsof -w -n -i tcp:"$port" para Linux');
 
   final i = Injects.init();
 
