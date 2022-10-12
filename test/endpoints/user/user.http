@@ -1,11 +1,11 @@
 ###
-DELETE http://localhost:8000/user/0194ce7d-e304-497f-b540-8354c4ba921d
+DELETE http://localhost:17000/user/0194ce7d-e304-497f-b540-8354c4ba921d
 
 ###
-GET http://localhost:8000/user/1566d92f-9119-44d5-830e-9c3f94eb657c
+GET http://localhost:17000/user/1566d92f-9119-44d5-830e-9c3f94eb657c
 
 ###
-POST http://localhost:8000/user
+POST http://localhost:17000/user
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:8000/user
+PUT http://localhost:17000/user
 Content-Type: application/json
 
 {
