@@ -31,5 +31,5 @@ Content-Type: application/json
       "name": "professor",
       "description": ""
     },
-    "ativo": true
+    "enabled": true
 }

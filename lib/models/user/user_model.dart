@@ -7,7 +7,7 @@ import '../type_user/type_user_model.dart';
 
 class UserModel extends UserDefault {
   final String id;
-  final bool ativo;
+  final bool enabled;
   final TypeUserModel typeUser;
 
   UserModel({
@@ -17,7 +17,7 @@ class UserModel extends UserDefault {
     required super.birthDate,
     required super.idCompany,
     required this.typeUser,
-    required this.ativo,
+    required this.enabled,
   });
   factory UserModel.fromMap(Map<String, dynamic> json) {
     final map = MapFields.load(json);
@@ -29,7 +29,7 @@ class UserModel extends UserDefault {
       birthDate: map.getDateTime('birth_date', DateTime.now()),
       idCompany: map.getString('id_company', ''),
       typeUser: TypeUserModel.fromMap(type),
-      ativo: map.getBool('ativo', true),
+      enabled: map.getBool('enabled', true),
     );
   }
 
@@ -41,7 +41,7 @@ class UserModel extends UserDefault {
       'birth_date': birthDate.toBirthDate().toString(),
       'id_company': idCompany,
       'id_type_user': typeUser.id,
-      'ativo': ativo,
+      'enabled': enabled,
     };
   }
 
@@ -53,7 +53,7 @@ class UserModel extends UserDefault {
       'birth_date': birthDate.toBirthDate().toString(),
       'id_company': idCompany,
       'types_user': typeUser.toMap(),
-      'ativo': ativo,
+      'enabled': enabled,
     };
   }
 
