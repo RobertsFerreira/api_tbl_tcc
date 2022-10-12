@@ -4,10 +4,9 @@ import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 
 Future<void> main() async {
-  print('netstat -a -o | find "8000"');
-
   MapFieldsSettings.instance.setLanguage(MapFieldsLanguages.ptBr);
   CustomEnv.fromFile('.env-dev');
+  print('netstat -a -o | find "${CustomEnv.get<int>(key: 'server_port')}');
 
   final i = Injects.init();
 
