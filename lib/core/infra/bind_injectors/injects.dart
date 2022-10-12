@@ -1,8 +1,11 @@
 import 'package:api_tbl_tcc/export/export_functions.dart';
+import 'package:api_tbl_tcc/services/group/group_service.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
 
+import '../../../apis/group/group_api.dart';
 import '../../../models/type_user/type_user_model.dart';
 import '../../interfaces/generic_service/generic_service.dart';
+import '../../models/group/group_default.dart';
 import '../../models/user/user_default.dart';
 import 'bind_injectors.dart';
 
@@ -23,6 +26,12 @@ class Injects {
     );
     i.bind<UserApi>(
       () => UserApi(i.get<GenericService<UserDefault>>()),
+    );
+    i.bind<GenericService<GroupDefault>>(
+      () => GroupService(i.get<HttpClient>()),
+    );
+    i.bind<GroupApi>(
+      () => GroupApi(i.get<GenericService<GroupDefault>>()),
     );
     return i;
   }
