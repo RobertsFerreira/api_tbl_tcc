@@ -17,3 +17,9 @@ class InvalidIdCompany extends GenericError {
     required super.message,
   });
 }
+
+class InvalidIdClass extends GenericError {
+  InvalidIdClass({
+    required super.message,
+  });
+}
