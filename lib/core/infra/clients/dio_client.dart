@@ -1,9 +1,9 @@
 import 'package:api_tbl_tcc/core/models/errors/generic_error/generic_error.dart';
 import 'package:dio/dio.dart';
 
-import '../../core/interfaces/clients/http_client.dart';
-import '../../core/models/errors/client/client_error.dart';
-import '../../utils/custom_env.dart';
+import '../../../utils/custom_env.dart';
+import '../../interfaces/clients/http_client.dart';
+import '../../models/errors/client/client_error.dart';
 
 class DioClient implements HttpClient {
   late Dio _dio;
