@@ -83,6 +83,6 @@ class UserApi extends Api {
       }
     });
 
-    return createHandler(router: router);
+    return createHandler(router: router, middlewares: middlewares);
   }
 }
