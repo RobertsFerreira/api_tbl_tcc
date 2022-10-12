@@ -12,6 +12,7 @@ Future<void> main() async {
   print('netstat -a -o | find "$port" para windows');
 
   print('lsof -w -n -i tcp:"$port" para Linux');
+  print('kill -9 PID para Linux');
 
   final i = Injects.init();
 
