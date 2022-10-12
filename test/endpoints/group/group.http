@@ -1,4 +1,7 @@
 ###
+GET http://localhost:8000/group/9a701066-27e2-49d2-ae07-0c0f8fea9524
+
+###
 POST http://localhost:8000/group
 Content-Type: application/json
 
