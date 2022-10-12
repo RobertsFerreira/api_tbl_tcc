@@ -17,7 +17,7 @@ class GroupApi extends Api {
   Handler getHandler({List<Middleware>? middlewares}) {
     Router router = Router();
 
-    router.post('group', (Request req) async {
+    router.post('/group', (Request req) async {
       final body = await req.readAsString();
       final newGroup = NewGroupModel.fromJson(body);
       final inserted = await _groupService.insert(newGroup);
