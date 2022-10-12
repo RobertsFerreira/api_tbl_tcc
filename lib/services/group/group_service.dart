@@ -1,4 +1,5 @@
 import 'package:api_tbl_tcc/core/models/group/group_default.dart';
+import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/interfaces/generic_service/generic_service.dart';
@@ -21,9 +22,40 @@ class GroupService implements GenericService<GroupDefault> {
   }
 
   @override
-  Future<List<GroupDefault>> get({String? idCompany}) {
-    // TODO: implement get
-    throw UnimplementedError();
+  Future<List<GroupDefault>> get({String? idCompany, String? idClass}) async {
+    List<GroupDefault> listOfGroups = [];
+    try {
+      if (idClass == null) {
+        throw InvalidIdClass(
+          message: 'É necessário informar o id da turma',
+        );
+      }
+      final result = await _client.get(
+        'group',
+        queryParameters: {
+          'id_class': idClass,
+        },
+      );
+
+      final map = MapFields.load(result);
+
+      final listGroups = map.getList<Map<String, dynamic>>('group', []);
+
+      final groups = listGroups.map((e) => GroupModel.fromMap(e)).toList();
+
+      listOfGroups = groups;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidIdClass {
+      rethrow;
+    } on ClientError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return listOfGroups;
   }
 
   @override
