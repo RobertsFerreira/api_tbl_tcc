@@ -1,3 +1,4 @@
+import 'package:api_tbl_tcc/apis/group/group_api.dart';
 import 'package:api_tbl_tcc/export/export_functions.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
       .add(i.get<SobreApi>().handler)
       .add(i.get<TypesUserApi>().getHandler())
       .add(i.get<UserApi>().getHandler())
+      .add(i.get<GroupApi>().getHandler())
       .handler;
 
   var handler = Pipeline()
