@@ -72,6 +72,10 @@ class UserService implements GenericService<UserDefault> {
     String? idCompany,
   }) async {
     List<UserDefault> listOfUsers = [];
+    if (idCompany == null) {
+      throw InvalidArgumentHasura(
+          message: 'É necessário informar o id da empresa');
+    }
     try {
       final result = await _client.get(
         'user',
