@@ -5,10 +5,11 @@ import 'package:map_fields/map_fields.dart';
 import '../../core/models/group/group_default.dart';
 
 class NewGroupModel extends GroupDefault {
+  final String idUserLeader;
   NewGroupModel({
     required super.idClass,
     required super.reference,
-    required super.idUserLeader,
+    required this.idUserLeader,
   });
 
   factory NewGroupModel.fromMap(Map<String, dynamic> json) {
