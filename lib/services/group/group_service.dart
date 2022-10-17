@@ -68,12 +68,50 @@ class GroupService implements GenericService<GroupDefault> {
   Future<bool> insert(GroupDefault group) async {
     try {
       final groupMap = (group as NewGroupModel).toMap();
-      final response = await _client.post(
+
+      var response = await _client.post(
         'group',
         body: groupMap,
       );
 
-      return HelperHasura.returnResponseBool(response, 'insert_group');
+      final groupResp = response['insert_group'] ?? {};
+
+      if (groupResp.isEmpty) {
+        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
+      }
+
+      var map = MapFields.load(groupResp);
+
+      final returnList = map.getList<Map<String, dynamic>>('returning', []);
+
+      if (returnList.isEmpty) {
+        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
+      }
+
+      if (returnList.length > 1) {
+        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
+      }
+
+      map = MapFields.load(returnList.first);
+
+      final idGroup = map.getString('id', '');
+
+      final mapUsers = group.users
+          .map((e) => {
+                //verificar os dados montas aqui
+                'id_group': idGroup,
+                'id_user': e.id,
+              })
+          .toList();
+
+      response = await _client.post(
+        'group/users',
+        body: {
+          'users': mapUsers,
+        },
+      );
+
+      return HelperHasura.returnResponseBool(response, 'insert_users_groups');
     } on ClientError {
       rethrow;
     } on MapFieldsError {

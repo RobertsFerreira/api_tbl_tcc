@@ -80,7 +80,7 @@ void main() {
           birthDate: DateTime.now(),
           idCompany: '',
           typeUser: TypeUserModel(id: '', name: ''),
-          enabled: false,
+          active: false,
         ),
       );
 
