@@ -21,7 +21,7 @@ class UserModel extends UserDefault {
   });
   factory UserModel.fromMap(Map<String, dynamic> json) {
     final map = MapFields.load(json);
-    final type = (json['types_user'] ?? {});
+    final type = map.getMap<String, dynamic>('types_user', {});
     return UserModel(
       id: map.getString('id', ''),
       name: map.getString('name', ''),
