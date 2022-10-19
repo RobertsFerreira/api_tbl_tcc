@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:api_tbl_tcc/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/models/user/user_model.dart';
 import 'package:map_fields/map_fields.dart';
@@ -29,4 +31,9 @@ class NewQuizModel extends QuizDefaultModel {
       'number_question': numberQuestion,
     };
   }
+
+  String toJson() => jsonEncode(toMap());
+
+  factory NewQuizModel.fromJson(String source) =>
+      NewQuizModel.fromMap(jsonDecode(source));
 }
