@@ -62,9 +62,3 @@ class UserModel extends UserDefault {
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(jsonDecode(source));
 }
-
-extension ToBirthDate on DateTime {
-  String toBirthDate() {
-    return '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
-  }
-}
