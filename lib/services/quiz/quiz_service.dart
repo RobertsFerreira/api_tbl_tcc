@@ -8,10 +8,10 @@ import 'package:map_fields/map_fields.dart';
 import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
 
-class QuizHeaderService implements GenericService<QuizDefaultModel> {
+class QuizService implements GenericService<QuizDefaultModel> {
   final HttpClient _client;
 
-  QuizHeaderService(this._client);
+  QuizService(this._client);
 
   @override
   Future<bool> delete(String id) {
