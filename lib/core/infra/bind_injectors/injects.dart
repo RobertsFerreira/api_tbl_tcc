@@ -1,9 +1,11 @@
 import 'package:api_tbl_tcc/export/export_functions.dart';
+import 'package:api_tbl_tcc/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/services/group/group_service.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
 
 import '../../../apis/group/group_api.dart';
 import '../../../models/type_user/type_user_model.dart';
+import '../../../services/quiz/quiz_service.dart';
 import '../../interfaces/generic_service/generic_service.dart';
 import '../../models/group/group_default.dart';
 import '../../models/user/user_default.dart';
@@ -32,6 +34,9 @@ class Injects {
     );
     i.bind<GroupApi>(
       () => GroupApi(i.get<GenericService<GroupDefault>>()),
+    );
+    i.bind<GenericService<QuizDefaultModel>>(
+      () => QuizService(i.get<HttpClient>()),
     );
     return i;
   }
