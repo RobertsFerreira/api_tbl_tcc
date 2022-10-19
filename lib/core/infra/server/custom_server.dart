@@ -16,7 +16,7 @@ class CustomServer {
 
     await _terminateRequestFuture();
 
-    await server.close(force: true);
+    await server.close();
   }
 
   Future<void> _terminateRequestFuture() {
