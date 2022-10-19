@@ -84,17 +84,19 @@ class GroupService implements GenericService<GroupDefault> {
 
       final returnList = map.getList<Map<String, dynamic>>('returning', []);
 
-      if (returnList.isEmpty) {
-        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
-      }
-
-      if (returnList.length > 1) {
+      if (returnList.isEmpty || returnList.length > 1) {
         throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
       }
 
       map = MapFields.load(returnList.first);
 
       final idGroup = map.getString('id', '');
+
+      if (idGroup.isEmpty) {
+        throw InvalidArgumentHasura(
+          message: 'Erro ao buscar o código do grupo',
+        );
+      }
 
       final mapUsers = group.users
           .map((e) => {
