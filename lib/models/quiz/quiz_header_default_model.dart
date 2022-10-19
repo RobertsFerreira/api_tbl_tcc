@@ -1,12 +1,12 @@
 import '../user/user_model.dart';
 
-class QuizHeaderDefault {
+class QuizHeaderDefaultModel {
   final String idClass;
   final UserModel teacher;
   final DateTime date;
   final int numberQuestion;
 
-  QuizHeaderDefault({
+  QuizHeaderDefaultModel({
     required this.idClass,
     required this.teacher,
     required this.date,
