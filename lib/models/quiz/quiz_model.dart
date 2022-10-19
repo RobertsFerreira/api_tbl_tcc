@@ -1,4 +1,4 @@
-import 'package:api_tbl_tcc/models/quiz/quiz_default_model.dart';
+import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../user/user_model.dart';
@@ -12,6 +12,7 @@ class QuizModel extends QuizDefaultModel {
     required super.teacher,
     required super.date,
     required super.numberQuestion,
+    required super.idCompany,
   });
 
   factory QuizModel.fromMap(Map<String, dynamic> map) {
@@ -23,6 +24,7 @@ class QuizModel extends QuizDefaultModel {
       teacher: UserModel.fromMap(user),
       date: mapFields.getDateTime('date', DateTime.now()),
       numberQuestion: mapFields.getInt('number_question', -1),
+      idCompany: mapFields.getString('id_company', ''),
     );
   }
 
@@ -33,6 +35,7 @@ class QuizModel extends QuizDefaultModel {
       'id_user': teacher.id,
       'date': date,
       'number_question': numberQuestion,
+      'id_company': idCompany
     };
   }
 
@@ -43,6 +46,7 @@ class QuizModel extends QuizDefaultModel {
       'id_user': teacher.toMap(),
       'date': date,
       'number_question': numberQuestion,
+      'id_company': idCompany
     };
   }
 }

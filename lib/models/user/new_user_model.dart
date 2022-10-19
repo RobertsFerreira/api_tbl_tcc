@@ -28,7 +28,7 @@ class NewUserModel extends UserDefault {
     return {
       'name': name,
       'cpf': cpf,
-      'birth_date': birthDate.toBirthDate().toString(),
+      'birth_date': birthDate.toBirthDate(),
       'id_company': idCompany,
       'id_type_user': typeUser,
     };

@@ -12,7 +12,7 @@ class HelperHasura {
     final data = response['error'];
     if (data != null) {
       final messageError = _returnErrorHasura(response);
-      throw InvalidArgumentHasura(message: messageError);
+      throw InvalidArgumentHasura(message: messageError, key: key);
     }
     final mapResponse = MapFields.load(response[key] ?? {});
     final result = mapResponse.getInt('affected_rows', -1);
