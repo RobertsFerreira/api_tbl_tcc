@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:api_tbl_tcc/core/models/errors/arguments/invalid_argument_hasura.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 
@@ -23,6 +24,16 @@ class MiddlewareInterceptor {
             body: jsonEncode({
               'erro': e.message,
               'message': 'Status code: ${e.statusCode} - Method: ${e.method}',
+              'stacktrace': s.toString(),
+              'type': e.runtimeType.toString(),
+            }),
+          );
+        } else if (e is InvalidArgumentHasura) {
+          return Response.internalServerError(
+            body: jsonEncode({
+              'erro': e.message,
+              'message':
+                  "Erro no processamento do campo '${e.key}' no retorno do hasura",
               'stacktrace': s.toString(),
               'type': e.runtimeType.toString(),
             }),

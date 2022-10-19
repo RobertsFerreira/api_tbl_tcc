@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:api_tbl_tcc/models/quiz/quiz_default_model.dart';
+import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 

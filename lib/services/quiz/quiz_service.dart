@@ -1,8 +1,8 @@
 import 'package:api_tbl_tcc/core/interfaces/clients/http_client.dart';
 import 'package:api_tbl_tcc/core/interfaces/generic_service/generic_service.dart';
 import 'package:api_tbl_tcc/core/models/errors/arguments/invalid_argument_hasura.dart';
+import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/models/quiz/new_quiz_model.dart';
-import 'package:api_tbl_tcc/models/quiz/quiz_default_model.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/errors/client/client_error.dart';
@@ -46,11 +46,13 @@ class QuizService implements GenericService<QuizDefaultModel> {
 
       final mapFields = MapFields.load(response);
 
-      final quizResp = mapFields.getMap<String, dynamic>('insert_quiz', {});
+      final quizResp =
+          mapFields.getMap<String, dynamic>('insert_quiz_header', {});
 
       if (quizResp.isEmpty) {
         throw InvalidArgumentHasura(
-          message: 'erro ao inserir cabeçalho do questionário',
+          message: 'Erro ao inserir cabeçalho do questionário',
+          key: 'insert_quiz_header',
         );
       }
 
@@ -59,7 +61,10 @@ class QuizService implements GenericService<QuizDefaultModel> {
       final returnList = map.getList<Map<String, dynamic>>('returning', []);
 
       if (returnList.isEmpty || returnList.length > 1) {
-        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
+        throw InvalidArgumentHasura(
+          message: 'Erro ao inserir grupo',
+          key: 'insert_quiz_header.returning',
+        );
       }
 
       map = MapFields.load(returnList.first);
@@ -69,6 +74,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
       if (idQuiz.isEmpty) {
         throw InvalidArgumentHasura(
           message: 'Erro ao buscar código do quiz',
+          key: 'insert_quiz_header.returning.id',
         );
       }
 
