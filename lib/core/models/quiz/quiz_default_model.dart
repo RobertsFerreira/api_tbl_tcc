@@ -1,4 +1,4 @@
-import 'package:api_tbl_tcc/core/models/quiz/quiz_question_default_model.dart';
+import 'package:api_tbl_tcc/core/models/quiz/question_default_model.dart';
 
 import '../../../models/user/user_model.dart';
 
@@ -8,7 +8,7 @@ class QuizDefaultModel {
   final DateTime date;
   final int numberQuestion;
   final String idCompany;
-  final List<QuizQuestionDefaultModel> questions;
+  final List<QuestionDefaultModel> questions;
 
   QuizDefaultModel({
     required this.idClass,

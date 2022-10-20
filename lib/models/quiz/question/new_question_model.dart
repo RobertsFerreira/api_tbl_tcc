@@ -1,40 +1,36 @@
 import 'package:map_fields/map_fields.dart';
 
-import '../../../core/models/quiz/quiz_question_default_model.dart';
+import '../../../core/models/quiz/question_default_model.dart';
 
-class NewQuizQuestionModel extends QuizQuestionDefaultModel {
-  NewQuizQuestionModel({
+class NewQuestionModel extends QuestionDefaultModel {
+  NewQuestionModel({
     required super.idQuiz,
     required super.idCompany,
     required super.description,
-    required super.answer,
-    required super.points,
+    required super.numberAnswer,
   });
 
-  NewQuizQuestionModel copyWith({
+  NewQuestionModel copyWith({
     String? idQuiz,
     String? idCompany,
     String? description,
-    String? answer,
-    int? points,
+    int? numberAnswer,
   }) {
-    return NewQuizQuestionModel(
+    return NewQuestionModel(
       idQuiz: idQuiz ?? this.idQuiz,
       idCompany: idCompany ?? this.idCompany,
       description: description ?? this.description,
-      answer: answer ?? this.answer,
-      points: points ?? this.points,
+      numberAnswer: numberAnswer ?? this.numberAnswer,
     );
   }
 
-  factory NewQuizQuestionModel.fromMap(Map<String, dynamic> map) {
+  factory NewQuestionModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
-    return NewQuizQuestionModel(
+    return NewQuestionModel(
       idQuiz: mapFields.getString('id_quiz', ''),
       idCompany: mapFields.getString('id_company', ''),
       description: mapFields.getString('description', ''),
-      answer: mapFields.getString('answer', ''),
-      points: mapFields.getInt('points', -1),
+      numberAnswer: mapFields.getInt('number_answer', -1),
     );
   }
 
@@ -43,8 +39,7 @@ class NewQuizQuestionModel extends QuizQuestionDefaultModel {
       'id_quiz': idQuiz,
       'id_company': idCompany,
       'description': description,
-      'answer': answer,
-      'points': points,
+      'number_answer': numberAnswer,
     };
   }
 }

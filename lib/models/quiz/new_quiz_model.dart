@@ -5,7 +5,7 @@ import 'package:api_tbl_tcc/models/user/user_model.dart';
 import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
-import 'question/new_quiz_question_model.dart';
+import 'question/new_question_model.dart';
 
 class NewQuizModel extends QuizDefaultModel {
   NewQuizModel({
@@ -27,8 +27,7 @@ class NewQuizModel extends QuizDefaultModel {
       date: mapFields.getDateTime('date', DateTime.now()),
       numberQuestion: mapFields.getInt('number_question', -1),
       idCompany: mapFields.getString('id_company', ''),
-      questions:
-          questionsMap.map((e) => NewQuizQuestionModel.fromMap(e)).toList(),
+      questions: questionsMap.map((e) => NewQuestionModel.fromMap(e)).toList(),
     );
   }
 
@@ -41,7 +40,7 @@ class NewQuizModel extends QuizDefaultModel {
       'id_company': idCompany,
       'questions': questions
           .map(
-            (e) => (e as NewQuizQuestionModel).toMap(),
+            (e) => (e as NewQuestionModel).toMap(),
           )
           .toList(),
     };

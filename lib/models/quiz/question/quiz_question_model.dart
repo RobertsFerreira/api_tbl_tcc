@@ -1,29 +1,27 @@
 import 'dart:convert';
 
-import 'package:api_tbl_tcc/core/models/quiz/quiz_question_default_model.dart';
+import 'package:api_tbl_tcc/core/models/quiz/question_default_model.dart';
 import 'package:map_fields/map_fields.dart';
 
-class QuizQuestionModel extends QuizQuestionDefaultModel {
+class QuestionModel extends QuestionDefaultModel {
   final String id;
 
-  QuizQuestionModel({
+  QuestionModel({
     required this.id,
     required super.idQuiz,
     required super.idCompany,
     required super.description,
-    required super.answer,
-    required super.points,
+    required super.numberAnswer,
   });
 
-  factory QuizQuestionModel.fromMap(Map<String, dynamic> map) {
+  factory QuestionModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
-    return QuizQuestionModel(
+    return QuestionModel(
       id: mapFields.getString('id', ''),
       idQuiz: mapFields.getString('id_quiz', ''),
       idCompany: mapFields.getString('id_company', ''),
       description: mapFields.getString('description', ''),
-      answer: mapFields.getString('answer', ''),
-      points: mapFields.getInt('points', -1),
+      numberAnswer: mapFields.getInt('number_answer', -1),
     );
   }
 
@@ -33,13 +31,12 @@ class QuizQuestionModel extends QuizQuestionDefaultModel {
       'id_quiz': idQuiz,
       'id_company': idCompany,
       'description': description,
-      'answer': answer,
-      'points': points,
+      'number_answer': numberAnswer,
     };
   }
 
-  factory QuizQuestionModel.fromJson(String source) =>
-      QuizQuestionModel.fromMap(jsonDecode(source));
+  factory QuestionModel.fromJson(String source) =>
+      QuestionModel.fromMap(jsonDecode(source));
 
   String toJson() => jsonEncode(toMap());
 }

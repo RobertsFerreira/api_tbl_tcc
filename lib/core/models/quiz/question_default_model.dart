@@ -1,15 +1,13 @@
-class QuizQuestionDefaultModel {
+class QuestionDefaultModel {
   final String idQuiz;
   final String idCompany;
   final String description;
-  final String answer;
-  final int points;
+  final int numberAnswer;
 
-  QuizQuestionDefaultModel({
+  QuestionDefaultModel({
     required this.idQuiz,
     required this.idCompany,
     required this.description,
-    required this.answer,
-    required this.points,
+    required this.numberAnswer,
   });
 }

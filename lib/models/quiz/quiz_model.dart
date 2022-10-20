@@ -29,7 +29,7 @@ class QuizModel extends QuizDefaultModel {
       date: mapFields.getDateTime('date', DateTime.now()),
       numberQuestion: mapFields.getInt('number_question', -1),
       idCompany: mapFields.getString('id_company', ''),
-      questions: questionsMap.map((e) => QuizQuestionModel.fromMap(e)).toList(),
+      questions: questionsMap.map((e) => QuestionModel.fromMap(e)).toList(),
     );
   }
 
@@ -52,8 +52,7 @@ class QuizModel extends QuizDefaultModel {
       'date': date,
       'number_question': numberQuestion,
       'id_company': idCompany,
-      'questions':
-          questions.map((e) => (e as QuizQuestionModel).toMap()).toList()
+      'questions': questions.map((e) => (e as QuestionModel).toMap()).toList()
     };
   }
 }
