@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:api_tbl_tcc/core/models/quiz/answer_default_model.dart';
 import 'package:map_fields/map_fields.dart';
 
-class NewAnswer extends AnswerDefaultModel {
-  NewAnswer({
+class NewAnswerModel extends AnswerDefaultModel {
+  NewAnswerModel({
     required super.idCompany,
     required super.idQuestion,
     required super.description,
@@ -12,9 +12,9 @@ class NewAnswer extends AnswerDefaultModel {
     required super.score,
   });
 
-  factory NewAnswer.fromMap(Map<String, dynamic> map) {
+  factory NewAnswerModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
-    return NewAnswer(
+    return NewAnswerModel(
       idCompany: mapFields.getString('id_company', ''),
       idQuestion: mapFields.getString('id_question', ''),
       description: mapFields.getString('description', ''),
@@ -33,8 +33,8 @@ class NewAnswer extends AnswerDefaultModel {
     };
   }
 
-  factory NewAnswer.fromJson(String source) =>
-      NewAnswer.fromMap(jsonDecode(source));
+  factory NewAnswerModel.fromJson(String source) =>
+      NewAnswerModel.fromMap(jsonDecode(source));
 
   String toJson() => jsonEncode(toMap());
 }
