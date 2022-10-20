@@ -92,6 +92,10 @@ class QuizService implements GenericService<QuizDefaultModel> {
     }
   }
 
+  bool insertQuestionsQuiz(String idQuiz, List<QuizDefaultModel> questions) {
+    return false;
+  }
+
   @override
   Future<bool> update(QuizDefaultModel t) {
     // TODO: implement update
