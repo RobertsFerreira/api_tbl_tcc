@@ -12,6 +12,23 @@ class NewAnswerModel extends AnswerDefaultModel {
     required super.score,
   });
 
+  //copyWith
+  NewAnswerModel copyWith({
+    String? idCompany,
+    String? idQuestion,
+    String? description,
+    bool? correct,
+    int? score,
+  }) {
+    return NewAnswerModel(
+      idCompany: idCompany ?? this.idCompany,
+      idQuestion: idQuestion ?? this.idQuestion,
+      description: description ?? this.description,
+      correct: correct ?? this.correct,
+      score: score ?? this.score,
+    );
+  }
+
   factory NewAnswerModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
     return NewAnswerModel(
