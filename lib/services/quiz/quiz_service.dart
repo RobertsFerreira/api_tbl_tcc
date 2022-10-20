@@ -60,7 +60,19 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      return true;
+      final inserted = await _insertQuestionsQuiz(
+        idQuiz,
+        (quiz.questions as List<NewQuestionModel>),
+      );
+
+      if (!inserted) {
+        throw InvalidArgumentHasura(
+          message: 'Erro ao inserir o quiz',
+          key: 'insert_quiz_question',
+        );
+      }
+
+      return inserted;
     } on ClientError {
       rethrow;
     } on MapFieldsError {
@@ -89,7 +101,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
       List<bool> insertsSuccess = [];
 
       for (var question in questions) {
-        final questionMap = question.toMap();
+        final questionMap = question.copyWith(idQuiz: idQuiz).toMap();
         final response = await _client.post(
           '/quiz/question',
           body: {
@@ -155,10 +167,15 @@ class QuizService implements GenericService<QuizDefaultModel> {
 
       final response = await _client.post(
         '/quiz/question/answer',
-        body: listAnswers,
+        body: {
+          'answers': listAnswers,
+        },
       );
 
-      return HelperHasura.returnResponseBool(response, 'insert_quiz_answers');
+      return HelperHasura.returnResponseBool(
+        response,
+        'insert_answer_question',
+      );
     } on ClientError {
       rethrow;
     } on MapFieldsError {
