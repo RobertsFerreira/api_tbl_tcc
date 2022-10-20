@@ -3,10 +3,12 @@ import 'package:api_tbl_tcc/core/interfaces/generic_service/generic_service.dart
 import 'package:api_tbl_tcc/core/models/errors/arguments/invalid_argument_hasura.dart';
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/models/quiz/new_quiz_model.dart';
+import 'package:api_tbl_tcc/models/quiz/question/new_quiz_question_model.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
+import '../../utils/hasura/helper_hasura.dart';
 
 class QuizService implements GenericService<QuizDefaultModel> {
   final HttpClient _client;
@@ -92,8 +94,33 @@ class QuizService implements GenericService<QuizDefaultModel> {
     }
   }
 
-  bool insertQuestionsQuiz(String idQuiz, List<QuizDefaultModel> questions) {
-    return false;
+  Future<bool> insertQuestionsQuiz(
+    String idQuiz,
+    List<QuizDefaultModel> questions,
+  ) async {
+    final listMapsQuestions = questions
+        .map(
+          (e) => (e as NewQuizQuestionModel)
+              .copyWith(
+                idQuiz: idQuiz,
+              )
+              .toMap(),
+        )
+        .toList();
+
+    if (listMapsQuestions.isEmpty) {
+      throw UnknownError(
+        message:
+            'Erro ao inserir questões do questionário, lista de questões esta vazia',
+      );
+    }
+
+    final response = await _client.post(
+      '/quiz/questions',
+      body: listMapsQuestions,
+    );
+
+    return HelperHasura.returnResponseBool(response, 'insert_quiz_questions');
   }
 
   @override
