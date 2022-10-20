@@ -8,6 +8,7 @@ import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
+import '../../models/quiz/answer/new_answer_model.dart';
 import '../../utils/hasura/helper_hasura.dart';
 
 class QuizService implements GenericService<QuizDefaultModel> {
@@ -46,32 +47,11 @@ class QuizService implements GenericService<QuizDefaultModel> {
         body: quizMap,
       );
 
-      final mapFields = MapFields.load(response);
-
-      final quizResp =
-          mapFields.getMap<String, dynamic>('insert_quiz_header', {});
-
-      if (quizResp.isEmpty) {
-        throw InvalidArgumentHasura(
-          message: 'Erro ao inserir cabeçalho do questionário',
-          key: 'insert_quiz_header',
-        );
-      }
-
-      var map = MapFields.load(quizResp);
-
-      final returnList = map.getList<Map<String, dynamic>>('returning', []);
-
-      if (returnList.isEmpty || returnList.length > 1) {
-        throw InvalidArgumentHasura(
-          message: 'Erro ao inserir grupo',
-          key: 'insert_quiz_header.returning',
-        );
-      }
-
-      map = MapFields.load(returnList.first);
-
-      final idQuiz = map.getString('id', '');
+      final idQuiz = HelperHasura.getReturningHasura(
+        response,
+        keyMap: 'insert_quiz_header',
+        keyValueSearch: 'id',
+      );
 
       if (idQuiz.isEmpty) {
         throw InvalidArgumentHasura(
@@ -94,29 +74,102 @@ class QuizService implements GenericService<QuizDefaultModel> {
     }
   }
 
-  Future<bool> insertQuestionsQuiz(
+  Future<bool> _insertQuestionsQuiz(
     String idQuiz,
     List<NewQuestionModel> questions,
   ) async {
-    final listMapsQuestions = questions
-        .map(
-          (e) => e.copyWith(idQuiz: idQuiz).toMap(),
-        )
-        .toList();
+    try {
+      if (questions.isEmpty) {
+        throw UnknownError(
+          message:
+              'Erro ao inserir questões do questionário, lista de questões esta vazia',
+        );
+      }
 
-    if (listMapsQuestions.isEmpty) {
-      throw UnknownError(
-        message:
-            'Erro ao inserir questões do questionário, lista de questões esta vazia',
-      );
+      List<bool> insertsSuccess = [];
+
+      for (var question in questions) {
+        final questionMap = question.toMap();
+        final response = await _client.post(
+          '/quiz/question',
+          body: {
+            'question': questionMap,
+          },
+        );
+        final idQuestions = HelperHasura.getReturningHasura(
+          response,
+          keyMap: 'insert_quiz_questions',
+          keyValueSearch: 'id',
+        );
+        if (idQuestions.isEmpty) {
+          throw InvalidArgumentHasura(
+            message: 'Erro ao buscar código das questões',
+            key: 'insert_quiz_questions.returning.id',
+          );
+        }
+
+        final inserted = await _insertAnswer(
+          idQuestions,
+          (question.answers as List<NewAnswerModel>),
+        );
+
+        insertsSuccess.add(inserted);
+      }
+
+      if (insertsSuccess.contains(false)) {
+        throw UnknownError(
+          message: 'Erro ao inserir questões do questionário',
+        );
+      }
+
+      return true;
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidArgumentHasura {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
+  }
 
-    final response = await _client.post(
-      '/quiz/questions',
-      body: listMapsQuestions,
-    );
+  Future<bool> _insertAnswer(
+    String idQuestion,
+    List<NewAnswerModel> answers,
+  ) async {
+    try {
+      final listAnswers = answers
+          .map(
+            (e) => e.copyWith(idQuestion: idQuestion).toMap(),
+          )
+          .toList();
+      if (listAnswers.isEmpty) {
+        throw UnknownError(
+          message:
+              'Erro ao inserir respostas do questionário, lista de respostas esta vazia',
+        );
+      }
 
-    return HelperHasura.returnResponseBool(response, 'insert_quiz_questions');
+      final response = await _client.post(
+        '/quiz/question/answer',
+        body: listAnswers,
+      );
+
+      return HelperHasura.returnResponseBool(response, 'insert_quiz_answers');
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidArgumentHasura {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
