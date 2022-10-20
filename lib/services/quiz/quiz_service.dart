@@ -42,7 +42,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      final result = await _client.get('url', queryParameters: {
+      final result = await _client.get('/quiz', queryParameters: {
         'id_company': idCompany,
         'id_class': idClass,
       });
