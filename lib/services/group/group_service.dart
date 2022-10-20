@@ -74,29 +74,35 @@ class GroupService implements GenericService<GroupDefault> {
         body: groupMap,
       );
 
-      final groupResp = response['insert_group'] ?? {};
+      final idGroup = HelperHasura.getReturningHasura(
+        response,
+        keyMap: 'insert_group',
+        keyValueSearch: 'id',
+      );
 
-      if (groupResp.isEmpty) {
-        throw InvalidArgumentHasura(
-          message: 'Erro ao inserir grupo',
-          key: 'insert_group',
-        );
-      }
+      // final groupResp = response['insert_group'] ?? {};
 
-      var map = MapFields.load(groupResp);
+      // if (groupResp.isEmpty) {
+      //   throw InvalidArgumentHasura(
+      //     message: 'Erro ao inserir grupo',
+      //     key: 'insert_group',
+      //   );
+      // }
 
-      final returnList = map.getList<Map<String, dynamic>>('returning', []);
+      // var map = MapFields.load(groupResp);
 
-      if (returnList.isEmpty || returnList.length > 1) {
-        throw InvalidArgumentHasura(
-          message: 'Erro ao inserir grupo',
-          key: 'insert_group.returning',
-        );
-      }
+      // final returnList = map.getList<Map<String, dynamic>>('returning', []);
 
-      map = MapFields.load(returnList.first);
+      // if (returnList.isEmpty || returnList.length > 1) {
+      //   throw InvalidArgumentHasura(
+      //     message: 'Erro ao inserir grupo',
+      //     key: 'insert_group.returning',
+      //   );
+      // }
 
-      final idGroup = map.getString('id', '');
+      // map = MapFields.load(returnList.first);
+
+      // final idGroup = map.getString('id', '');
 
       if (idGroup.isEmpty) {
         throw InvalidArgumentHasura(
