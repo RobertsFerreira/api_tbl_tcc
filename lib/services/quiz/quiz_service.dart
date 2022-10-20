@@ -49,7 +49,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
 
       final map = MapFields.load(result);
 
-      final listQuizzes = map.getList<Map<String, dynamic>>('quiz', []);
+      final listQuizzes = map.getList<Map<String, dynamic>>('quiz_header', []);
 
       final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
 
