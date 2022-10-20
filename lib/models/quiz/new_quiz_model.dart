@@ -38,11 +38,6 @@ class NewQuizModel extends QuizDefaultModel {
       'date': date.toDateHasura(),
       'number_question': numberQuestion,
       'id_company': idCompany,
-      'questions': questions
-          .map(
-            (e) => (e as NewQuestionModel).toMap(),
-          )
-          .toList(),
     };
   }
 
