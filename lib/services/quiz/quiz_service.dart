@@ -9,6 +9,7 @@ import 'package:map_fields/map_fields.dart';
 import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
 import '../../models/quiz/answer/new_answer_model.dart';
+import '../../models/quiz/quiz_model.dart';
 import '../../utils/hasura/helper_hasura.dart';
 
 class QuizService implements GenericService<QuizDefaultModel> {
@@ -26,9 +27,45 @@ class QuizService implements GenericService<QuizDefaultModel> {
   Future<List<QuizDefaultModel>> get({
     String? idCompany,
     String? idClass,
-  }) {
-    // TODO: implement get
-    throw UnimplementedError();
+  }) async {
+    List<QuizDefaultModel> listOfQuizzes = [];
+    try {
+      if (idCompany == null) {
+        throw InvalidIdCompany(
+          message: 'É necessário informar o id da empresa',
+        );
+      }
+
+      if (idClass == null) {
+        throw InvalidIdClass(
+          message: 'É necessário informar o id da turma',
+        );
+      }
+
+      final result = await _client.get('url', queryParameters: {
+        'id_company': idCompany,
+        'id_class': idClass,
+      });
+
+      final map = MapFields.load(result);
+
+      final listQuizzes = map.getList<Map<String, dynamic>>('quiz', []);
+
+      final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
+
+      listOfQuizzes = quizzes;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidIdClass {
+      rethrow;
+    } on ClientError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return listOfQuizzes;
   }
 
   @override
