@@ -21,15 +21,15 @@ class UserModel extends UserDefault {
   });
   factory UserModel.fromMap(Map<String, dynamic> json) {
     final map = MapFields.load(json);
-    final type = map.getMap<String, dynamic>('types_user', {});
+    final type = map.getMap<String, dynamic>('types_user');
     return UserModel(
-      id: map.getString('id', ''),
-      name: map.getString('name', ''),
-      cpf: map.getString('cpf', ''),
-      birthDate: map.getDateTime('birth_date', DateTime.now()),
-      idCompany: map.getString('id_company', ''),
+      id: map.getString('id'),
+      name: map.getString('name'),
+      cpf: map.getString('cpf'),
+      birthDate: map.getDateTime('birth_date'),
+      idCompany: map.getString('id_company'),
       typeUser: TypeUserModel.fromMap(type),
-      active: map.getBool('active', false),
+      active: map.getBool('active'),
     );
   }
 
