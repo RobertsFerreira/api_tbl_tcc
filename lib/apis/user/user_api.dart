@@ -32,7 +32,7 @@ class UserApi extends Api {
       }
     });
 
-    router.get('/user/<company>', (Request req, String company) async {
+    router.get('/users/<company>', (Request req, String company) async {
       final users = await _userService.get(idCompany: company);
       if (users.isEmpty) {
         return Response(204);

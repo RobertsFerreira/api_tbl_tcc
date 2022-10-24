@@ -16,11 +16,11 @@ class NewUserModel extends UserDefault {
   factory NewUserModel.fromMap(Map<String, dynamic> map) {
     final maps = MapFields.load(map);
     return NewUserModel(
-      idCompany: maps.getString('id_company', ''),
-      name: maps.getString('name', ''),
-      cpf: maps.getString('cpf', ''),
-      birthDate: maps.getDateTime('birth_date', DateTime.now()),
-      typeUser: maps.getString('id_type_user', ''),
+      idCompany: maps.getString('id_company'),
+      name: maps.getString('name'),
+      cpf: maps.getString('cpf'),
+      birthDate: maps.getDateTime('birth_date'),
+      typeUser: maps.getString('id_type_user'),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
+import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:api_tbl_tcc/models/user/user_model.dart';
 import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
@@ -8,6 +9,8 @@ import 'package:map_fields/map_fields.dart';
 import 'question/new_question_model.dart';
 
 class NewQuizModel extends QuizDefaultModel {
+  final List<GroupModel> groups;
+
   NewQuizModel({
     required super.idClass,
     required super.teacher,
@@ -15,12 +18,14 @@ class NewQuizModel extends QuizDefaultModel {
     required super.numberQuestion,
     required super.idCompany,
     required super.questions,
+    required this.groups,
   });
 
   factory NewQuizModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
     final user = mapFields.getMap<String, dynamic>('user');
     final questionsMap = mapFields.getList<Map<String, dynamic>>('questions');
+    final groupsMap = mapFields.getList<Map<String, dynamic>>('groups');
     return NewQuizModel(
       idClass: mapFields.getString('id_class', ''),
       teacher: UserModel.fromMap(user),
@@ -28,6 +33,7 @@ class NewQuizModel extends QuizDefaultModel {
       numberQuestion: mapFields.getInt('number_question', -1),
       idCompany: mapFields.getString('id_company', ''),
       questions: questionsMap.map((e) => NewQuestionModel.fromMap(e)).toList(),
+      groups: groupsMap.map((e) => GroupModel.fromMap(e)).toList(),
     );
   }
 

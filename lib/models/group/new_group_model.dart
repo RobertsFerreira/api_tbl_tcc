@@ -16,12 +16,12 @@ class NewGroupModel extends GroupDefault {
 
   factory NewGroupModel.fromMap(Map<String, dynamic> json) {
     final map = MapFields.load(json);
-    final userGroups = map.getList<Map<String, dynamic>>('users_groups', []);
+    final userGroups = map.getList<Map<String, dynamic>>('users_groups');
 
     return NewGroupModel(
-      idClass: map.getString('id_class', ''),
-      reference: map.getString('reference', ''),
-      idUserLeader: map.getString('id_user_leader', ''),
+      idClass: map.getString('id_class'),
+      reference: map.getString('reference'),
+      idUserLeader: map.getString('id_user_leader'),
       users: userGroups.map((e) => UserModel.fromMap(e)).toList(),
     );
   }
