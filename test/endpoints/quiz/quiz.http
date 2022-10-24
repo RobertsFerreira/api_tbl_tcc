@@ -1,8 +1,8 @@
-GET http://robertferreira.ddns.net:17000/quiz/1566d92f-9119-44d5-830e-9c3f94eb657c/9a701066-27e2-49d2-ae07-0c0f8fea9524
+GET http://localhost:17000/quizzes/1566d92f-9119-44d5-830e-9c3f94eb657c/9a701066-27e2-49d2-ae07-0c0f8fea9524
 
 ###
 
-POST http://robertferreira.ddns.net:17000/quiz
+POST http://localhost:17000/quizzes
 Content-Type: application/json
 
 {
@@ -34,6 +34,54 @@ Content-Type: application/json
           "description": "Brasilia",
           "correct": true,
           "score": 4
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "d73eba0d-b85e-478f-bdde-e2970ff3e40a",
+      "id_class": "9a701066-27e2-49d2-ae07-0c0f8fea9524",
+      "reference": "000001",
+      "user_leader": {
+        "id": "ca158f4b-76bd-40db-8499-f406dca4bf4d",
+        "name": "Roberta",
+        "cpf": "123121564",
+        "birth_date": "2000-02-10",
+        "id_company": "1566d92f-9119-44d5-830e-9c3f94eb657c",
+        "types_user": {
+          "id": "d8a292ba-78e2-4ef0-9917-b6424f4e271f",
+          "name": "professor",
+          "description": ""
+        },
+        "active": true
+      },
+      "users_groups": [
+        {
+          "id": "ca158f4b-76bd-40db-8499-f406dca4bf4d",
+          "name": "Roberta",
+          "cpf": "123121564",
+          "birth_date": "2000-02-10",
+          "id_company": "1566d92f-9119-44d5-830e-9c3f94eb657c",
+          "types_user": {
+            "id": "d8a292ba-78e2-4ef0-9917-b6424f4e271f",
+            "name": "professor",
+            "description": ""
+          },
+          "active": true
+        },
+        {
+          "id": "8378ba1e-20a8-4163-8cfe-ea2dfd8792e9",
+          "name": "Robert",
+          "cpf": "1323454879",
+          "birth_date": "2000-12-25",
+          "id_company": "1566d92f-9119-44d5-830e-9c3f94eb657c",
+          "types_user": {
+            "id": "103925a9-9b8f-4a4f-a50a-1980d46d3d89",
+            "name": "aluno",
+            "description": ""
+          },
+          "active": true
         }
       ]
     }
