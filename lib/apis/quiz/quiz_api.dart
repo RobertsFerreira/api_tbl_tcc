@@ -19,7 +19,7 @@ class QuizApi extends Api {
   Handler getHandler({List<Middleware>? middlewares}) {
     Router router = Router();
 
-    router.get('/quiz/<idCompany>/<idClass>', (
+    router.get('/quizzes/<idCompany>/<idClass>', (
       Request req,
       String idCompany,
       String idClass,
@@ -46,7 +46,7 @@ class QuizApi extends Api {
       }
     });
 
-    router.post('/quiz', (Request req) async {
+    router.post('/quizzes', (Request req) async {
       final body = await req.readAsString();
       final newQuiz = NewQuizModel.fromJson(body);
       final inserted = await _quizService.insert(newQuiz);

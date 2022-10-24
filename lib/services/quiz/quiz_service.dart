@@ -2,6 +2,7 @@ import 'package:api_tbl_tcc/core/interfaces/clients/http_client.dart';
 import 'package:api_tbl_tcc/core/interfaces/generic_service/generic_service.dart';
 import 'package:api_tbl_tcc/core/models/errors/arguments/invalid_argument_hasura.dart';
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
+import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:api_tbl_tcc/models/quiz/new_quiz_model.dart';
 import 'package:api_tbl_tcc/models/quiz/question/new_question_model.dart';
 import 'package:map_fields/map_fields.dart';
@@ -42,7 +43,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      final result = await _client.get('/quiz', queryParameters: {
+      final result = await _client.get('/quizzes', queryParameters: {
         'id_company': idCompany,
         'id_class': idClass,
       });
@@ -80,7 +81,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
       final quizMap = (quiz as NewQuizModel).toMap();
 
       var response = await _client.post(
-        'quiz',
+        'quizzes',
         body: quizMap,
       );
 
@@ -97,6 +98,15 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
+      final insertGroups = await _insertQuizLinkedGroups(quiz.groups, idQuiz);
+
+      if (!insertGroups) {
+        throw InvalidArgumentHasura(
+          message: 'Erro ao inserir grupos do quiz',
+          key: 'insert_quiz_linked_groups',
+        );
+      }
+
       final inserted = await _insertQuestionsQuiz(
         idQuiz,
         (quiz.questions as List<NewQuestionModel>),
@@ -110,6 +120,44 @@ class QuizService implements GenericService<QuizDefaultModel> {
       }
 
       return inserted;
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidArgumentHasura {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> _insertQuizLinkedGroups(
+      List<GroupModel> groups, String idQuiz) async {
+    try {
+      if (groups.isEmpty) {
+        throw UnknownError(
+          message:
+              'Erro ao inserir os grupos vinculados ao questionário, lista de grupos esta vazia',
+        );
+      }
+
+      final listGroups = groups.map((e) {
+        return {
+          'id_group': e.id,
+          'id_quiz': idQuiz,
+        };
+      }).toList();
+
+      final response = await _client.post(
+        '/quizzes/groups',
+        body: {
+          'groups': listGroups,
+        },
+      );
+
+      return HelperHasura.returnResponseBool(response, 'insert_quiz_group');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
@@ -140,7 +188,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
       for (var question in questions) {
         final questionMap = question.copyWith(idQuiz: idQuiz).toMap();
         final response = await _client.post(
-          '/quiz/question',
+          '/quizzes/questions',
           body: {
             'question': questionMap,
           },
@@ -203,7 +251,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
       }
 
       final response = await _client.post(
-        '/quiz/question/answer',
+        '/quizzes/questions/answers',
         body: {
           'answers': listAnswers,
         },
