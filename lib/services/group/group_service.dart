@@ -31,11 +31,15 @@ class GroupService implements GenericService<GroupDefault> {
         );
       }
       final result = await _client.get(
-        'group',
+        'groups',
         queryParameters: {
           'id_class': idClass,
         },
       );
+
+      if (result == {}) {
+        return listOfGroups;
+      }
 
       final map = MapFields.load(result);
 
@@ -70,7 +74,7 @@ class GroupService implements GenericService<GroupDefault> {
       final groupMap = (group as NewGroupModel).toMap();
 
       var response = await _client.post(
-        'group',
+        'groups',
         body: groupMap,
       );
 
@@ -79,30 +83,6 @@ class GroupService implements GenericService<GroupDefault> {
         keyMap: 'insert_group',
         keyValueSearch: 'id',
       );
-
-      // final groupResp = response['insert_group'] ?? {};
-
-      // if (groupResp.isEmpty) {
-      //   throw InvalidArgumentHasura(
-      //     message: 'Erro ao inserir grupo',
-      //     key: 'insert_group',
-      //   );
-      // }
-
-      // var map = MapFields.load(groupResp);
-
-      // final returnList = map.getList<Map<String, dynamic>>('returning', []);
-
-      // if (returnList.isEmpty || returnList.length > 1) {
-      //   throw InvalidArgumentHasura(
-      //     message: 'Erro ao inserir grupo',
-      //     key: 'insert_group.returning',
-      //   );
-      // }
-
-      // map = MapFields.load(returnList.first);
-
-      // final idGroup = map.getString('id', '');
 
       if (idGroup.isEmpty) {
         throw InvalidArgumentHasura(
@@ -120,7 +100,7 @@ class GroupService implements GenericService<GroupDefault> {
           .toList();
 
       response = await _client.post(
-        'group/users',
+        'groups/users',
         body: {
           'users': mapUsers,
         },
