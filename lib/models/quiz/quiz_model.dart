@@ -21,15 +21,14 @@ class QuizModel extends QuizDefaultModel {
   factory QuizModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
     final user = mapFields.getMap<String, dynamic>('user');
-    final questionsMap =
-        mapFields.getList<Map<String, dynamic>>('questions', []);
+    final questionsMap = mapFields.getList<Map<String, dynamic>>('questions');
     return QuizModel(
-      id: mapFields.getString('id', ''),
-      idClass: mapFields.getString('id_class', ''),
+      id: mapFields.getString('id'),
+      idClass: mapFields.getString('id_class'),
       teacher: UserModel.fromMap(user),
-      date: mapFields.getDateTime('date', DateTime.now()),
-      numberQuestion: mapFields.getInt('number_question', -1),
-      idCompany: mapFields.getString('id_company', ''),
+      date: mapFields.getDateTime('date'),
+      numberQuestion: mapFields.getInt('number_question'),
+      idCompany: mapFields.getString('id_company'),
       questions: questionsMap.map((e) => QuestionModel.fromMap(e)).toList(),
     );
   }
@@ -49,7 +48,7 @@ class QuizModel extends QuizDefaultModel {
     return {
       'id': id,
       'id_class': idClass,
-      'id_user': teacher.toMap(),
+      'user': teacher.toMap(),
       'date': date.toDateHasura(),
       'number_question': numberQuestion,
       'id_company': idCompany,

@@ -54,14 +54,16 @@ class QuizService implements GenericService<QuizDefaultModel> {
         throw UnknownError(message: 'É necessário informar a data de fim');
       }
 
+      final queryParams = {
+        'id_company': idCompany,
+        'id_class': idClass,
+        'from': from.toDateHasuraWithoutTime(),
+        'to': to.toDateHasuraWithoutTime(),
+      };
+
       final result = await _client.get(
         '/quizzes',
-        queryParameters: {
-          'id_company': idCompany,
-          'id_class': idClass,
-          'from': from.toDateHasura(),
-          'to': to.toDateHasura(),
-        },
+        queryParameters: queryParams,
       );
 
       final map = MapFields.load(result);
