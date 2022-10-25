@@ -5,6 +5,7 @@ import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:api_tbl_tcc/models/quiz/new_quiz_model.dart';
 import 'package:api_tbl_tcc/models/quiz/question/new_question_model.dart';
+import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/errors/client/client_error.dart';
@@ -28,6 +29,8 @@ class QuizService implements GenericService<QuizDefaultModel> {
   Future<List<QuizDefaultModel>> get({
     String? idCompany,
     String? idClass,
+    DateTime? from,
+    DateTime? to,
   }) async {
     List<QuizDefaultModel> listOfQuizzes = [];
     try {
@@ -43,10 +46,23 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      final result = await _client.get('/quizzes', queryParameters: {
-        'id_company': idCompany,
-        'id_class': idClass,
-      });
+      if (from == null) {
+        throw UnknownError(message: 'É necessário informar a data de início');
+      }
+
+      if (to == null) {
+        throw UnknownError(message: 'É necessário informar a data de fim');
+      }
+
+      final result = await _client.get(
+        '/quizzes',
+        queryParameters: {
+          'id_company': idCompany,
+          'id_class': idClass,
+          'from': from.toDateHasura(),
+          'to': to.toDateHasura(),
+        },
+      );
 
       final map = MapFields.load(result);
 

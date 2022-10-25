@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/services/quiz/quiz_service.dart';
+import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
@@ -24,9 +25,15 @@ class QuizApi extends Api {
       String idCompany,
       String idClass,
     ) async {
+      final queryParams = req.url.queryParameters;
+
+      final map = MapFields.load(queryParams);
+
       final quizzes = await (_quizService as QuizService).get(
         idCompany: idCompany,
         idClass: idClass,
+        from: map.getDateTime('from'),
+        to: map.getDateTime('to'),
       );
 
       if (quizzes.isEmpty) {
