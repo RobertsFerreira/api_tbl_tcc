@@ -16,6 +16,7 @@ class QuizModel extends QuizDefaultModel {
     required super.numberQuestion,
     required super.idCompany,
     required super.questions,
+    required super.title,
   });
 
   factory QuizModel.fromMap(Map<String, dynamic> map) {
@@ -30,6 +31,7 @@ class QuizModel extends QuizDefaultModel {
       numberQuestion: mapFields.getInt('number_question'),
       idCompany: mapFields.getString('id_company'),
       questions: questionsMap.map((e) => QuestionModel.fromMap(e)).toList(),
+      title: mapFields.getString('title'),
     );
   }
 
@@ -40,7 +42,8 @@ class QuizModel extends QuizDefaultModel {
       'id_user': teacher.id,
       'date': date.toDateHasura(),
       'number_question': numberQuestion,
-      'id_company': idCompany
+      'id_company': idCompany,
+      'title': title,
     };
   }
 
@@ -52,7 +55,8 @@ class QuizModel extends QuizDefaultModel {
       'date': date.toDateHasura(),
       'number_question': numberQuestion,
       'id_company': idCompany,
-      'questions': questions.map((e) => (e as QuestionModel).toMap()).toList()
+      'questions': questions.map((e) => (e as QuestionModel).toMap()).toList(),
+      'title': title,
     };
   }
 }

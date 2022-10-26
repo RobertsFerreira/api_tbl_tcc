@@ -19,6 +19,7 @@ class NewQuizModel extends QuizDefaultModel {
     required super.idCompany,
     required super.questions,
     required this.groups,
+    required super.title,
   });
 
   factory NewQuizModel.fromMap(Map<String, dynamic> map) {
@@ -34,6 +35,7 @@ class NewQuizModel extends QuizDefaultModel {
       idCompany: mapFields.getString('id_company', ''),
       questions: questionsMap.map((e) => NewQuestionModel.fromMap(e)).toList(),
       groups: groupsMap.map((e) => GroupModel.fromMap(e)).toList(),
+      title: mapFields.getString('title', ''),
     );
   }
 
@@ -44,6 +46,7 @@ class NewQuizModel extends QuizDefaultModel {
       'date': date.toDateHasura(),
       'number_question': numberQuestion,
       'id_company': idCompany,
+      'title': title,
     };
   }
 
