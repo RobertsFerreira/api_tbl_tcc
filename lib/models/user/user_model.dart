@@ -21,15 +21,15 @@ class UserModel extends UserDefault {
   });
   factory UserModel.fromMap(Map<String, dynamic> json) {
     final map = MapFields.load(json);
-    final type = map.getMap<String, dynamic>('types_user', {});
+    final type = map.getMap<String, dynamic>('types_user');
     return UserModel(
-      id: map.getString('id', ''),
-      name: map.getString('name', ''),
-      cpf: map.getString('cpf', ''),
-      birthDate: map.getDateTime('birth_date', DateTime.now()),
-      idCompany: map.getString('id_company', ''),
+      id: map.getString('id'),
+      name: map.getString('name'),
+      cpf: map.getString('cpf'),
+      birthDate: map.getDateTime('birth_date'),
+      idCompany: map.getString('id_company'),
       typeUser: TypeUserModel.fromMap(type),
-      active: map.getBool('active', false),
+      active: map.getBool('active'),
     );
   }
 
@@ -38,7 +38,7 @@ class UserModel extends UserDefault {
       'id': id,
       'name': name,
       'cpf': cpf,
-      'birth_date': birthDate.toBirthDate().toString(),
+      'birth_date': birthDate.toBirthDate(),
       'id_company': idCompany,
       'id_type_user': typeUser.id,
       'active': active,
@@ -50,7 +50,7 @@ class UserModel extends UserDefault {
       'id': id,
       'name': name,
       'cpf': cpf,
-      'birth_date': birthDate.toBirthDate().toString(),
+      'birth_date': birthDate.toBirthDate(),
       'id_company': idCompany,
       'types_user': typeUser.toMap(),
       'active': active,
@@ -61,10 +61,4 @@ class UserModel extends UserDefault {
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(jsonDecode(source));
-}
-
-extension ToBirthDate on DateTime {
-  String toBirthDate() {
-    return '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
-  }
 }

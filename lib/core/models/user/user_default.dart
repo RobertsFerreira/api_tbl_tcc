@@ -11,3 +11,9 @@ class UserDefault {
     required this.idCompany,
   });
 }
+
+extension ToBirthDate on DateTime {
+  String toBirthDate() {
+    return '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
+  }
+}

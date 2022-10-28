@@ -31,11 +31,15 @@ class GroupService implements GenericService<GroupDefault> {
         );
       }
       final result = await _client.get(
-        'group',
+        'groups',
         queryParameters: {
           'id_class': idClass,
         },
       );
+
+      if (result == {}) {
+        return listOfGroups;
+      }
 
       final map = MapFields.load(result);
 
@@ -70,31 +74,22 @@ class GroupService implements GenericService<GroupDefault> {
       final groupMap = (group as NewGroupModel).toMap();
 
       var response = await _client.post(
-        'group',
+        'groups',
         body: groupMap,
       );
 
-      final groupResp = response['insert_group'] ?? {};
+      final idGroup = HelperHasura.getReturningHasura(
+        response,
+        keyMap: 'insert_group',
+        keyValueSearch: 'id',
+      );
 
-      if (groupResp.isEmpty) {
-        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
+      if (idGroup.isEmpty) {
+        throw InvalidArgumentHasura(
+          message: 'Erro ao buscar o código do grupo',
+          key: 'insert_group.returning.id',
+        );
       }
-
-      var map = MapFields.load(groupResp);
-
-      final returnList = map.getList<Map<String, dynamic>>('returning', []);
-
-      if (returnList.isEmpty) {
-        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
-      }
-
-      if (returnList.length > 1) {
-        throw InvalidArgumentHasura(message: 'Erro ao inserir grupo');
-      }
-
-      map = MapFields.load(returnList.first);
-
-      final idGroup = map.getString('id', '');
 
       final mapUsers = group.users
           .map((e) => {
@@ -105,7 +100,7 @@ class GroupService implements GenericService<GroupDefault> {
           .toList();
 
       response = await _client.post(
-        'group/users',
+        'groups/users',
         body: {
           'users': mapUsers,
         },

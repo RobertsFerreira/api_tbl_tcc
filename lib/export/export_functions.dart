@@ -1,4 +1,6 @@
+export 'package:api_tbl_tcc/apis/group/group_api.dart';
 export 'package:api_tbl_tcc/apis/login/login_api.dart';
+export 'package:api_tbl_tcc/apis/quiz/quiz_api.dart';
 export 'package:api_tbl_tcc/apis/sobre/sobre_api.dart';
 export 'package:api_tbl_tcc/apis/types_user/type_user.dart';
 export 'package:api_tbl_tcc/apis/user/user_api.dart';

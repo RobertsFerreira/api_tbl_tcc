@@ -22,8 +22,8 @@ class TypeUserModel {
   factory TypeUserModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
     return TypeUserModel(
-      id: mapFields.getString('id', ''),
-      name: mapFields.getString('name', ''),
+      id: mapFields.getString('id'),
+      name: mapFields.getString('name'),
       description: mapFields.getString('description', ''),
     );
   }

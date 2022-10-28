@@ -16,11 +16,11 @@ class NewUserModel extends UserDefault {
   factory NewUserModel.fromMap(Map<String, dynamic> map) {
     final maps = MapFields.load(map);
     return NewUserModel(
-      idCompany: maps.getString('id_company', ''),
-      name: maps.getString('name', ''),
-      cpf: maps.getString('cpf', ''),
-      birthDate: maps.getDateTime('birth_date', DateTime.now()),
-      typeUser: maps.getString('id_type_user', ''),
+      idCompany: maps.getString('id_company'),
+      name: maps.getString('name'),
+      cpf: maps.getString('cpf'),
+      birthDate: maps.getDateTime('birth_date'),
+      typeUser: maps.getString('id_type_user'),
     );
   }
 
@@ -28,7 +28,7 @@ class NewUserModel extends UserDefault {
     return {
       'name': name,
       'cpf': cpf,
-      'birth_date': birthDate.toBirthDate().toString(),
+      'birth_date': birthDate.toBirthDate(),
       'id_company': idCompany,
       'id_type_user': typeUser,
     };
@@ -38,10 +38,4 @@ class NewUserModel extends UserDefault {
 
   factory NewUserModel.fromJson(String source) =>
       NewUserModel.fromMap(jsonDecode(source));
-}
-
-extension ToBirthDate on DateTime {
-  String toBirthDate() {
-    return '$year-$month-$day';
-  }
 }

@@ -1,8 +1,8 @@
 ###
-GET http://localhost:17000/group/9a701066-27e2-49d2-ae07-0c0f8fea9524
+GET http://localhost:17000/groups/9a701066-27e2-49d2-ae07-0c0f8fea9524
 
 ###
-POST http://localhost:17000/group
+POST http://localhost:17000/groups
 Content-Type: application/json
 
 {
