@@ -35,7 +35,7 @@ class HelperHasura {
         message = 'Erro ao deletar';
       }
       throw UnknownError(
-        message: '$message usuário, houve mais de um usuário deletado: $result',
+        message: '$message, houve mais de um dado afetado: $result',
       );
     }
   }

@@ -278,6 +278,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
       return HelperHasura.returnResponseBool(
         response,
         'insert_answer_question',
+        multipleAffectedRows: true,
       );
     } on ClientError {
       rethrow;
