@@ -54,7 +54,7 @@ void main() {
           cpf: '',
           birthDate: DateTime.now(),
           idCompany: '',
-          typeUser: '',
+          typeUser: TypeUserModel(id: '', name: ''),
         ),
       );
 

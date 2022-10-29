@@ -5,39 +5,47 @@ import 'package:map_fields/map_fields.dart';
 
 import '../type_user/type_user_model.dart';
 
-class NewUserModel extends UserDefault {
-  NewUserModel({
+class LoginUserModel extends UserDefault {
+  final String password;
+  final String id;
+
+  LoginUserModel({
+    required this.id,
     required super.name,
     required super.cpf,
     required super.birthDate,
     required super.idCompany,
     required super.typeUser,
+    required this.password,
   });
 
-  factory NewUserModel.fromMap(Map<String, dynamic> map) {
+  factory LoginUserModel.fromMap(Map<String, dynamic> map) {
     final maps = MapFields.load(map);
     final typeUser = maps.getMap<String, dynamic>("typeUser");
-    return NewUserModel(
-      idCompany: maps.getString('id_company'),
+    return LoginUserModel(
+      id: maps.getString('id'),
       name: maps.getString('name'),
       cpf: maps.getString('cpf'),
       birthDate: maps.getDateTime('birth_date'),
+      idCompany: maps.getString('id_company'),
       typeUser: TypeUserModel.fromMap(typeUser),
+      password: maps.getString('password'),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'cpf': cpf,
       'birth_date': birthDate.toBirthDate(),
       'id_company': idCompany,
-      'id_type_user': typeUser.id,
+      'id_type_user': typeUser.toMap(),
     };
   }
 
-  String toJson() => jsonEncode(toMap());
+  toJson() => jsonEncode(toMap());
 
-  factory NewUserModel.fromJson(String source) =>
-      NewUserModel.fromMap(jsonDecode(source));
+  factory LoginUserModel.fromJson(String source) =>
+      LoginUserModel.fromMap(jsonDecode(source));
 }

@@ -8,7 +8,6 @@ import '../type_user/type_user_model.dart';
 class UserModel extends UserDefault {
   final String id;
   final bool active;
-  final TypeUserModel typeUser;
 
   UserModel({
     required this.id,
@@ -16,7 +15,7 @@ class UserModel extends UserDefault {
     required super.cpf,
     required super.birthDate,
     required super.idCompany,
-    required this.typeUser,
+    required super.typeUser,
     required this.active,
   });
   factory UserModel.fromMap(Map<String, dynamic> json) {
