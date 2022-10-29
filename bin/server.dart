@@ -16,7 +16,7 @@ Future<void> main() async {
   final i = Injects.init();
 
   var cascadeHandler = Cascade()
-      .add(i.get<LoginApi>().handler)
+      .add(i.get<LoginApi>().getHandler())
       .add(i.get<SobreApi>().handler)
       .add(i.get<TypesUserApi>().getHandler())
       .add(i.get<UserApi>().getHandler())
