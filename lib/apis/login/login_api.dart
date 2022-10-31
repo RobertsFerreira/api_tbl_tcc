@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:api_tbl_tcc/services/login/login.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -18,7 +20,8 @@ class LoginApi extends Api {
       final body = await req.readAsString();
       final user = LoginUserModel.fromJson(body);
       final userLogged = await _loginService.login(user);
-      return Response.ok(userLogged.toJson());
+      final returnUser = {'user': userLogged.toMap()};
+      return Response.ok(jsonEncode(returnUser));
     });
 
     return createHandler(router: router, middlewares: middlewares);
