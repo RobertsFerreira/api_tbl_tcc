@@ -53,6 +53,39 @@ class QuizApi extends Api {
       }
     });
 
+    router.get('/quizzes/user/<idCompany>/<idUser>', (
+      Request req,
+      String idCompany,
+      String idUser,
+    ) async {
+      final queryParams = req.url.queryParameters;
+
+      final map = MapFields.load(queryParams);
+
+      final quizzes = await (_quizService as QuizService).getUserOfStudent(
+        idCompany: idCompany,
+        idUser: idUser,
+        from: map.getDateTime('from'),
+        to: map.getDateTime('to'),
+      );
+
+      if (quizzes.isEmpty) {
+        return Response(204);
+      } else {
+        final quizMap = quizzes
+            .map(
+              (quiz) => (quiz as QuizModel).toMap(),
+            )
+            .toList();
+        final response = jsonEncode(
+          {
+            'quizzes': quizMap,
+          },
+        );
+        return Response.ok(response);
+      }
+    });
+
     router.post('/quizzes', (Request req) async {
       final body = await req.readAsString();
       final newQuiz = NewQuizModel.fromJson(body);
@@ -68,6 +101,34 @@ class QuizApi extends Api {
         );
       }
       return Response.ok('Quiz');
+    });
+
+    router.put('/quizzes/answered/<idGroup>/<idQuiz>', (
+      Request req,
+      String idGroup,
+      String idQuiz,
+    ) async {
+      final updated = await (_quizService as QuizService)
+          .updateQuizAnswered(idQuiz, idGroup);
+
+      if (updated) {
+        return Response.ok(
+          jsonEncode(
+            {
+              'message': 'Quiz atualizado com sucesso',
+            },
+          ),
+        );
+      } else {
+        return Response(
+          400,
+          body: jsonEncode(
+            {
+              'message': 'Erro ao atualizar o quiz',
+            },
+          ),
+        );
+      }
     });
 
     return createHandler(router: router, middlewares: middlewares);

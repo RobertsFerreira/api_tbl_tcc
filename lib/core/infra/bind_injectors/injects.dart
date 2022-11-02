@@ -1,6 +1,7 @@
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/export/export_functions.dart';
 import 'package:api_tbl_tcc/services/group/group_service.dart';
+import 'package:api_tbl_tcc/services/login/login.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
 
 import '../../../models/type_user/type_user_model.dart';
@@ -20,7 +21,10 @@ class Injects {
     i.bind<TypesUserApi>(
       () => TypesUserApi(i.get<GenericService<TypeUserModel>>()),
     );
-    i.bind<LoginApi>(() => LoginApi());
+    i.bind<LoginService>(
+      () => LoginService(i.get<HttpClient>()),
+    );
+    i.bind<LoginApi>(() => LoginApi(i.get<LoginService>()));
     i.bind<SobreApi>(() => SobreApi());
     i.bind<GenericService<UserDefault>>(
       () => UserService(i.get<HttpClient>()),

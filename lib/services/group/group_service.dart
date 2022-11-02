@@ -78,7 +78,7 @@ class GroupService implements GenericService<GroupDefault> {
         body: groupMap,
       );
 
-      final idGroup = HelperHasura.getReturningHasura(
+      final idGroup = HelperHasura.returningHasura(
         response,
         keyMap: 'insert_group',
         keyValueSearch: 'id',

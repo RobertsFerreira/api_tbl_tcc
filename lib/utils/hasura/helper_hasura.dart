@@ -53,7 +53,7 @@ class HelperHasura {
     return messageError;
   }
 
-  static dynamic getReturningHasura(
+  static dynamic returningHasura(
     Map<String, dynamic> response, {
     required String keyMap,
     required String keyValueSearch,
