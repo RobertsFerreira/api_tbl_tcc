@@ -21,7 +21,19 @@ class LoginService {
 
       final map = MapFields.load(response);
 
-      final userHasura = map.getMap<String, dynamic>('user');
+      final usersHasura = map.getList<Map<String, dynamic>>('user');
+
+      if (usersHasura.isEmpty) {
+        throw UnknownError(
+          message: 'Usuário não encontrado',
+        );
+      } else if (usersHasura.length > 1) {
+        throw UnknownError(
+          message: 'Mais de um usuário encontrado',
+        );
+      }
+
+      final userHasura = usersHasura.first;
 
       final userLogged = UserModel.fromMap(userHasura);
       return userLogged;

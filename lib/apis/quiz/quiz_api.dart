@@ -53,6 +53,39 @@ class QuizApi extends Api {
       }
     });
 
+    router.get('/quizzes/user/<idCompany>/<idUser>', (
+      Request req,
+      String idCompany,
+      String idUser,
+    ) async {
+      final queryParams = req.url.queryParameters;
+
+      final map = MapFields.load(queryParams);
+
+      final quizzes = await (_quizService as QuizService).getUserOfStudent(
+        idCompany: idCompany,
+        idUser: idUser,
+        from: map.getDateTime('from'),
+        to: map.getDateTime('to'),
+      );
+
+      if (quizzes.isEmpty) {
+        return Response(204);
+      } else {
+        final quizMap = quizzes
+            .map(
+              (quiz) => (quiz as QuizModel).toMap(),
+            )
+            .toList();
+        final response = jsonEncode(
+          {
+            'quizzes': quizMap,
+          },
+        );
+        return Response.ok(response);
+      }
+    });
+
     router.post('/quizzes', (Request req) async {
       final body = await req.readAsString();
       final newQuiz = NewQuizModel.fromJson(body);
