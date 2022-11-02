@@ -5,6 +5,7 @@ import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 
 import '../../models/errors/client/client_error.dart';
+import '../../models/errors/generic_error/generic_error.dart';
 
 class MiddlewareInterceptor {
   static Middleware get middleware {
@@ -34,6 +35,15 @@ class MiddlewareInterceptor {
               'erro': e.message,
               'message':
                   "Erro no processamento do campo '${e.key}' no retorno do hasura",
+              'stacktrace': s.toString(),
+              'type': e.runtimeType.toString(),
+            }),
+          );
+        } else if (e is UnknownError) {
+          return Response.internalServerError(
+            body: jsonEncode({
+              'erro': e.toString(),
+              'message': e.message,
               'stacktrace': s.toString(),
               'type': e.runtimeType.toString(),
             }),
