@@ -70,6 +70,34 @@ class QuizApi extends Api {
       return Response.ok('Quiz');
     });
 
+    router.put('/quizzes/answered/<idCompany>/<idGroup>', (
+      Request req,
+      String idCompany,
+      String idGroup,
+    ) {
+      final updated =
+          (_quizService as QuizService).updateQuizAnswered(idCompany, idGroup);
+
+      if (updated) {
+        return Response.ok(
+          jsonEncode(
+            {
+              'message': 'Quiz atualizado com sucesso',
+            },
+          ),
+        );
+      } else {
+        return Response(
+          400,
+          body: jsonEncode(
+            {
+              'message': 'Erro ao atualizar o quiz',
+            },
+          ),
+        );
+      }
+    });
+
     return createHandler(router: router, middlewares: middlewares);
   }
 }
