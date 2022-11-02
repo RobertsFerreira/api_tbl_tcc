@@ -103,13 +103,13 @@ class QuizApi extends Api {
       return Response.ok('Quiz');
     });
 
-    router.put('/quizzes/answered/<idCompany>/<idGroup>', (
+    router.put('/quizzes/answered/<idGroup>/<idQuiz>', (
       Request req,
-      String idCompany,
       String idGroup,
-    ) {
-      final updated =
-          (_quizService as QuizService).updateQuizAnswered(idCompany, idGroup);
+      String idQuiz,
+    ) async {
+      final updated = await (_quizService as QuizService)
+          .updateQuizAnswered(idQuiz, idGroup);
 
       if (updated) {
         return Response.ok(

@@ -360,15 +360,15 @@ class QuizService implements GenericService<QuizDefaultModel> {
     throw UnimplementedError();
   }
 
-  bool updateQuizAnswered(String idQuiz, String idGroup) {
+  Future<bool> updateQuizAnswered(String idQuiz, String idGroup) async {
     try {
       final body = {
         'id_quiz': idQuiz,
         'id_group': idGroup,
       };
 
-      final response = _client.put(
-        'quizzes/answered',
+      final response = await _client.put(
+        '/quizzes/answered',
         body: body,
       );
 
