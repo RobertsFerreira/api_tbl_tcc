@@ -10,6 +10,7 @@ import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
+import '../../models/quiz/answer/answer_user_model.dart';
 import '../../models/quiz/answer/new_answer_model.dart';
 import '../../models/quiz/quiz_model.dart';
 import '../../utils/hasura/helper_hasura.dart';
@@ -352,6 +353,30 @@ class QuizService implements GenericService<QuizDefaultModel> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<bool> insertAnswersUser(List<AnswerUserModel> answersUser) async {
+    final listAnswers = answersUser.map((e) => e.toMap()).toList();
+
+    if (listAnswers.isEmpty) {
+      throw UnknownError(
+        message:
+            'Erro ao inserir respostas do usuário, lista de respostas esta vazia',
+      );
+    }
+
+    final response = await _client.post(
+      '/quizzes/answers/users',
+      body: {
+        'answers': listAnswers,
+      },
+    );
+
+    return HelperHasura.returnResponseBool(
+      response,
+      'insert_answer_user',
+      multipleAffectedRows: true,
+    );
   }
 
   @override
