@@ -8,6 +8,7 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../../core/interfaces/api/api.dart';
 import '../../core/interfaces/generic_service/generic_service.dart';
+import '../../models/quiz/answer/answer_user_model.dart';
 import '../../models/quiz/new_quiz_model.dart';
 import '../../models/quiz/quiz_model.dart';
 
@@ -103,11 +104,17 @@ class QuizApi extends Api {
       return Response.ok('Quiz');
     });
 
-    router.put('/quizzes/answered/<idGroup>/<idQuiz>', (
+    router.put('/quizzes/answered/', (
       Request req,
-      String idGroup,
-      String idQuiz,
     ) async {
+      final body = await req.readAsString();
+
+      final map = MapFields.load(body);
+
+      final idQuiz = map.getString('id_quiz');
+
+      final idGroup = map.getString('id_group');
+
       final updated = await (_quizService as QuizService)
           .updateQuizAnswered(idQuiz, idGroup);
 
@@ -125,6 +132,43 @@ class QuizApi extends Api {
           body: jsonEncode(
             {
               'message': 'Erro ao atualizar o quiz',
+            },
+          ),
+        );
+      }
+    });
+
+    router.post('/quizzes/answers/users', (Request req) async {
+      final body = await req.readAsString();
+
+      final maps = MapFields.load(jsonDecode(body));
+
+      final answers = maps.getList<Map<String, dynamic>>('answers');
+
+      final answersUser = answers
+          .map(
+            (answer) => AnswerUserModel.fromMap(answer),
+          )
+          .toList();
+
+      final inserted =
+          await (_quizService as QuizService).insertAnswersUser(answersUser);
+
+      if (inserted) {
+        return Response(
+          201,
+          body: jsonEncode(
+            {
+              'message': 'Respostas inseridas com sucesso',
+            },
+          ),
+        );
+      } else {
+        return Response(
+          400,
+          body: jsonEncode(
+            {
+              'message': 'Erro ao inserir as respostas',
             },
           ),
         );
