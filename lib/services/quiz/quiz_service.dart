@@ -87,6 +87,67 @@ class QuizService implements GenericService<QuizDefaultModel> {
     return listOfQuizzes;
   }
 
+  Future<List<QuizDefaultModel>> getUserOfStudent({
+    String? idCompany,
+    String? idUser,
+    DateTime? from,
+    DateTime? to,
+  }) async {
+    List<QuizDefaultModel> listOfQuizzes = [];
+    try {
+      if (idCompany == null) {
+        throw InvalidIdCompany(
+          message: 'É necessário informar o id da empresa',
+        );
+      }
+
+      if (idUser == null) {
+        throw InvalidIdClass(
+          message: 'É necessário informar o id da turma',
+        );
+      }
+
+      if (from == null) {
+        throw UnknownError(message: 'É necessário informar a data de início');
+      }
+
+      if (to == null) {
+        throw UnknownError(message: 'É necessário informar a data de fim');
+      }
+
+      final queryParams = {
+        'id_company': idCompany,
+        'id_user': idUser,
+        'dataIni': from.toDateHasuraWithoutTime(),
+        'dataFim': to.toDateHasuraWithoutTime(),
+      };
+
+      final result = await _client.get(
+        '/quizzes/user',
+        queryParameters: queryParams,
+      );
+
+      final map = MapFields.load(result);
+
+      final listQuizzes = map.getList<Map<String, dynamic>>('quiz_header');
+
+      final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
+
+      listOfQuizzes = quizzes;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidIdClass {
+      rethrow;
+    } on ClientError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return listOfQuizzes;
+  }
+
   @override
   Future<QuizDefaultModel> getById(String id) {
     // TODO: implement getById
@@ -103,7 +164,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
         body: quizMap,
       );
 
-      final idQuiz = HelperHasura.getReturningHasura(
+      final idQuiz = HelperHasura.returningHasura(
         response,
         keyMap: 'insert_quiz_header',
         keyValueSearch: 'id',
@@ -211,7 +272,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
             'question': questionMap,
           },
         );
-        final idQuestions = HelperHasura.getReturningHasura(
+        final idQuestions = HelperHasura.returningHasura(
           response,
           keyMap: 'insert_quiz_questions',
           keyValueSearch: 'id',
@@ -297,5 +358,31 @@ class QuizService implements GenericService<QuizDefaultModel> {
   Future<bool> update(QuizDefaultModel t) {
     // TODO: implement update
     throw UnimplementedError();
+  }
+
+  Future<bool> updateQuizAnswered(String idQuiz, String idGroup) async {
+    try {
+      final body = {
+        'id_quiz': idQuiz,
+        'id_group': idGroup,
+      };
+
+      final response = await _client.put(
+        '/quizzes/answered',
+        body: body,
+      );
+
+      final result =
+          HelperHasura.returnResponseBool(response, 'update_quiz_group');
+      return result;
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
