@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:map_fields/map_fields.dart';
 
 class AnswerUserModel {
@@ -39,4 +41,9 @@ class AnswerUserModel {
       'scored_score': scoredScore,
     };
   }
+
+  factory AnswerUserModel.fromJson(String source) =>
+      AnswerUserModel.fromMap(jsonDecode(source));
+
+  String toJson() => jsonEncode(toMap());
 }
