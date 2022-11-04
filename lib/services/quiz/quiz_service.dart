@@ -366,7 +366,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
     }
 
     final response = await _client.post(
-      '/quizzes/answers/users',
+      '/questions/answers/users',
       body: {
         'answers': listAnswers,
       },

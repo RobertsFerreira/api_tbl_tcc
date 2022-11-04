@@ -22,7 +22,7 @@ class AnswerUserModel {
   factory AnswerUserModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
     return AnswerUserModel(
-      id: mapFields.getString('id'),
+      id: mapFields.getStringNullable('id'),
       idAnswer: mapFields.getString('id_answer'),
       idCompany: mapFields.getString('id_company'),
       idUser: mapFields.getString('id_user'),
@@ -33,7 +33,7 @@ class AnswerUserModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'id_answer': idAnswer,
       'id_company': idCompany,
       'id_user': idUser,
