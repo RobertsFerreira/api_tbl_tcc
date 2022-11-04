@@ -70,6 +70,7 @@ class UserService implements GenericService<UserDefault> {
   @override
   Future<List<UserDefault>> get({
     String? idCompany,
+    String? typeUser,
   }) async {
     List<UserDefault> listOfUsers = [];
     try {
@@ -78,10 +79,17 @@ class UserService implements GenericService<UserDefault> {
           message: 'É necessário informar o id da empresa',
         );
       }
+
+      if (typeUser == null) {
+        throw UnknownError(
+          message: 'É necessário informar o tipo de usuário',
+        );
+      }
       final result = await _client.get(
         'user',
         queryParameters: {
           'id_company': idCompany,
+          'type_user': typeUser,
         },
       );
 

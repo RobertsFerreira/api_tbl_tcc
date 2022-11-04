@@ -162,7 +162,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
 
       var response = await _client.post(
         'quizzes',
-        body: quizMap,
+        body: [quizMap],
       );
 
       final idQuiz = HelperHasura.returningHasura(

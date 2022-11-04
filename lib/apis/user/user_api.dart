@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:api_tbl_tcc/services/user/user_service.dart';
+import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
@@ -33,7 +35,13 @@ class UserApi extends Api {
     });
 
     router.get('/users/<company>', (Request req, String company) async {
-      final users = await _userService.get(idCompany: company);
+      final params = req.url.queryParameters;
+      final map = MapFields.load(params);
+      final typeUser = map.getString('type_user');
+      final users = await (_userService as UserService).get(
+        idCompany: company,
+        typeUser: typeUser,
+      );
       if (users.isEmpty) {
         return Response(204);
       } else {

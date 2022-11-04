@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:api_tbl_tcc/models/user/user_model.dart';
-import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 import 'question/new_question_model.dart';
@@ -14,7 +13,6 @@ class NewQuizModel extends QuizDefaultModel {
   NewQuizModel({
     required super.idClass,
     required super.teacher,
-    required super.date,
     required super.numberQuestion,
     required super.idCompany,
     required super.questions,
@@ -30,7 +28,6 @@ class NewQuizModel extends QuizDefaultModel {
     return NewQuizModel(
       idClass: mapFields.getString('id_class', ''),
       teacher: UserModel.fromMap(user),
-      date: mapFields.getDateTime('date', DateTime.now()),
       numberQuestion: mapFields.getInt('number_question', -1),
       idCompany: mapFields.getString('id_company', ''),
       questions: questionsMap.map((e) => NewQuestionModel.fromMap(e)).toList(),
@@ -43,7 +40,6 @@ class NewQuizModel extends QuizDefaultModel {
     return {
       'id_class': idClass,
       'id_user': teacher.id,
-      'date': date.toDateHasura(),
       'number_question': numberQuestion,
       'id_company': idCompany,
       'title': title,
