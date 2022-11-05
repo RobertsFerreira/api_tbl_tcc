@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 class VinculoQuiz {
@@ -38,7 +39,7 @@ class VinculoQuiz {
   Map<String, dynamic> toMap() {
     return {
       'title': title,
-      'date': date,
+      'date': date.toDateHasuraWithoutTime(),
       'reference_group': referenceGroup,
       'user_leader': userNameLeader,
     };
