@@ -5,6 +5,7 @@ import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:api_tbl_tcc/models/quiz/new_quiz_model.dart';
 import 'package:api_tbl_tcc/models/quiz/question/new_question_model.dart';
+import 'package:api_tbl_tcc/models/quiz/vinculo_quiz/vinculo_quiz.dart';
 import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
@@ -65,6 +66,43 @@ class QuizService implements GenericService<QuizDefaultModel> {
       rethrow;
     }
     return listOfQuizzes;
+  }
+
+  Future<List<VinculoQuiz>> getAllVinculoQuizzes(
+    DateTime initialDate,
+    DateTime finalDate,
+  ) async {
+    List<VinculoQuiz> vinculoQuizzes = [];
+    try {
+      final queryParams = {
+        'data_ini': initialDate.toDateHasura(),
+        'data_fim': finalDate.toDateHasura(),
+      };
+
+      final result = await _client.get(
+        '/quizzes/group/linked',
+        queryParameters: queryParams,
+      );
+
+      final map = MapFields.load(result);
+
+      final listQuizzes = map.getList<Map<String, dynamic>>('quiz_vincule');
+
+      final quizzes = listQuizzes.map((e) => VinculoQuiz.fromMap(e)).toList();
+
+      vinculoQuizzes = quizzes;
+    } on MapFieldsError {
+      rethrow;
+    } on InvalidIdClass {
+      rethrow;
+    } on ClientError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return vinculoQuizzes;
   }
 
   Future<List<QuizDefaultModel>> getUserOfStudent({

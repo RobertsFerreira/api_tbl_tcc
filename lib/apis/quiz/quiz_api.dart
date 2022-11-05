@@ -213,6 +213,40 @@ class QuizApi extends Api {
       }
     });
 
+    router.get('quizzes/group/linked', (Request req) async {
+      final queryParams = req.url.queryParameters;
+
+      final map = MapFields.load(queryParams);
+
+      final dataIni = map.getDateTime('data_ini');
+
+      final dataFim = map.getDateTime('data_fim');
+
+      final listVinculos =
+          await (_quizService as QuizService).getAllVinculoQuizzes(
+        dataIni,
+        dataFim,
+      );
+
+      if (listVinculos.isEmpty) {
+        return Response(204);
+      } else {
+        final quizMap = listVinculos
+            .map(
+              (quiz) => quiz.toMap(),
+            )
+            .toList();
+
+        final response = jsonEncode(
+          {
+            'quizzes': quizMap,
+          },
+        );
+
+        return Response.ok(response);
+      }
+    });
+
     return createHandler(router: router, middlewares: middlewares);
   }
 }
