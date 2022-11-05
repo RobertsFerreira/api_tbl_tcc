@@ -6,14 +6,12 @@ import 'package:map_fields/map_fields.dart';
 class VinculoQuiz {
   final String title;
   final DateTime date;
-  final String referenceGroup;
-  final String userNameLeader;
+  final List<CustomGroup> groups;
 
   VinculoQuiz({
     required this.title,
     required this.date,
-    required this.referenceGroup,
-    required this.userNameLeader,
+    required this.groups,
   });
 
   factory VinculoQuiz.fromMap(Map<String, dynamic> map) {
@@ -22,17 +20,14 @@ class VinculoQuiz {
     final quizHeader = mapFields.getMap<String, dynamic>('quiz_header');
     final quizHeaderFields = MapFields.load(quizHeader);
 
-    final groupMap = mapFields.getMap<String, dynamic>('group');
-    final groupFields = MapFields.load(groupMap);
+    final groupMap = mapFields.getList<Map<String, dynamic>>('quiz_group');
 
-    final leaderMap = groupFields.getMap<String, dynamic>('user');
-    final leaderFields = MapFields.load(leaderMap);
+    final groups = groupMap.map((e) => CustomGroup.fromMap(e)).toList();
 
     return VinculoQuiz(
       title: quizHeaderFields.getString('title'),
       date: mapFields.getDateTime('date'),
-      referenceGroup: groupFields.getString('reference'),
-      userNameLeader: leaderFields.getString('name'),
+      groups: groups,
     );
   }
 
@@ -40,8 +35,40 @@ class VinculoQuiz {
     return {
       'title': title,
       'date': date.toDateHasuraWithoutTime(),
-      'reference_group': referenceGroup,
-      'user_leader': userNameLeader,
+      'groups': groups.map((e) => e.toMap()).toSet().toList(),
+    };
+  }
+
+  String toJson() => jsonEncode(toMap());
+}
+
+class CustomGroup {
+  final String reference;
+  final String nameLeader;
+
+  CustomGroup({
+    required this.reference,
+    required this.nameLeader,
+  });
+
+  factory CustomGroup.fromMap(Map<String, dynamic> map) {
+    MapFields mapFields = MapFields.load(map);
+    final maps = mapFields.getMap<String, dynamic>('group');
+    mapFields = MapFields.load(maps);
+
+    final leaderMap = mapFields.getMap<String, dynamic>('user');
+    final leaderFields = MapFields.load(leaderMap);
+
+    return CustomGroup(
+      reference: mapFields.getString('reference'),
+      nameLeader: leaderFields.getString('name'),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'reference': reference,
+      'name': nameLeader,
     };
   }
 
