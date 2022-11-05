@@ -29,9 +29,6 @@ class QuizService implements GenericService<QuizDefaultModel> {
   @override
   Future<List<QuizDefaultModel>> get({
     String? idCompany,
-    String? idClass,
-    DateTime? from,
-    DateTime? to,
   }) async {
     List<QuizDefaultModel> listOfQuizzes = [];
     try {
@@ -40,26 +37,8 @@ class QuizService implements GenericService<QuizDefaultModel> {
           message: 'É necessário informar o id da empresa',
         );
       }
-
-      if (idClass == null) {
-        throw InvalidIdClass(
-          message: 'É necessário informar o id da turma',
-        );
-      }
-
-      if (from == null) {
-        throw UnknownError(message: 'É necessário informar a data de início');
-      }
-
-      if (to == null) {
-        throw UnknownError(message: 'É necessário informar a data de fim');
-      }
-
       final queryParams = {
         'id_company': idCompany,
-        'id_class': idClass,
-        'from': from.toDateHasuraWithoutTime(),
-        'to': to.toDateHasuraWithoutTime(),
       };
 
       final result = await _client.get(
@@ -160,9 +139,15 @@ class QuizService implements GenericService<QuizDefaultModel> {
     try {
       final quizMap = (quiz as NewQuizModel).toMap();
 
+      final body = {
+        'quiz': [
+          quizMap,
+        ],
+      };
+
       var response = await _client.post(
         'quizzes',
-        body: [quizMap],
+        body: body,
       );
 
       final idQuiz = HelperHasura.returningHasura(
@@ -178,14 +163,14 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      final insertGroups = await _insertQuizLinkedGroups(quiz.groups, idQuiz);
+      // final insertGroups = await _insertQuizLinkedGroups(quiz.groups, idQuiz);
 
-      if (!insertGroups) {
-        throw InvalidArgumentHasura(
-          message: 'Erro ao inserir grupos do quiz',
-          key: 'insert_quiz_linked_groups',
-        );
-      }
+      // if (!insertGroups) {
+      //   throw InvalidArgumentHasura(
+      //     message: 'Erro ao inserir grupos do quiz',
+      //     key: 'insert_quiz_linked_groups',
+      //   );
+      // }
 
       final inserted = await _insertQuestionsQuiz(
         idQuiz,

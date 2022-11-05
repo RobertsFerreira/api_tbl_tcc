@@ -21,20 +21,12 @@ class QuizApi extends Api {
   Handler getHandler({List<Middleware>? middlewares}) {
     Router router = Router();
 
-    router.get('/quizzes/<idCompany>/<idClass>', (
+    router.get('/quizzes/<idCompany>', (
       Request req,
       String idCompany,
-      String idClass,
     ) async {
-      final queryParams = req.url.queryParameters;
-
-      final map = MapFields.load(queryParams);
-
       final quizzes = await (_quizService as QuizService).get(
         idCompany: idCompany,
-        idClass: idClass,
-        from: map.getDateTime('from'),
-        to: map.getDateTime('to'),
       );
 
       if (quizzes.isEmpty) {

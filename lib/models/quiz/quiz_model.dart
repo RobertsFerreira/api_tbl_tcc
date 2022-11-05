@@ -9,7 +9,6 @@ class QuizModel extends QuizDefaultModel {
 
   QuizModel({
     required this.id,
-    required super.idClass,
     required super.teacher,
     required super.numberQuestion,
     required super.idCompany,
@@ -23,7 +22,6 @@ class QuizModel extends QuizDefaultModel {
     final questionsMap = mapFields.getList<Map<String, dynamic>>('questions');
     return QuizModel(
       id: mapFields.getString('id'),
-      idClass: mapFields.getString('id_class'),
       teacher: UserModel.fromMap(user),
       numberQuestion: mapFields.getInt('number_question'),
       idCompany: mapFields.getString('id_company'),
@@ -35,7 +33,6 @@ class QuizModel extends QuizDefaultModel {
   Map<String, dynamic> toUpdate() {
     return {
       'id': id,
-      'id_class': idClass,
       'id_user': teacher.id,
       'number_question': numberQuestion,
       'id_company': idCompany,
@@ -46,7 +43,6 @@ class QuizModel extends QuizDefaultModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'id_class': idClass,
       'user': teacher.toMap(),
       'number_question': numberQuestion,
       'id_company': idCompany,
