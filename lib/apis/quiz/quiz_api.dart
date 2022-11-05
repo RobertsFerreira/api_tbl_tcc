@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
+import 'package:api_tbl_tcc/models/group/group_model.dart';
 import 'package:api_tbl_tcc/services/quiz/quiz_service.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
@@ -161,6 +162,54 @@ class QuizApi extends Api {
           body: jsonEncode(
             {
               'message': 'Erro ao inserir as respostas',
+            },
+          ),
+        );
+      }
+    });
+
+    router.post('/quizzes/vincule', (Request req) async {
+      final body = await req.readAsString();
+
+      final map = MapFields.load(body);
+
+      final idQuiz = map.getString('id_quiz');
+
+      final idCompany = map.getString('id_company');
+
+      final date = map.getDateTime('date');
+
+      final groupsMap = map.getList<Map<String, dynamic>>('groups');
+
+      final groups = groupsMap
+          .map(
+            (group) => GroupModel.fromMap(group),
+          )
+          .toList();
+
+      final inserted =
+          await (_quizService as QuizService).insertQuizLinkedGroups(
+        groups,
+        idQuiz,
+        idCompany,
+        date,
+      );
+
+      if (inserted) {
+        return Response(
+          201,
+          body: jsonEncode(
+            {
+              'message': 'Quiz vinculado com sucesso',
+            },
+          ),
+        );
+      } else {
+        return Response(
+          400,
+          body: jsonEncode(
+            {
+              'message': 'Erro ao vincular o quiz',
             },
           ),
         );

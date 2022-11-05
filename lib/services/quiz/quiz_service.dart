@@ -163,15 +163,6 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      // final insertGroups = await _insertQuizLinkedGroups(quiz.groups, idQuiz);
-
-      // if (!insertGroups) {
-      //   throw InvalidArgumentHasura(
-      //     message: 'Erro ao inserir grupos do quiz',
-      //     key: 'insert_quiz_linked_groups',
-      //   );
-      // }
-
       final inserted = await _insertQuestionsQuiz(
         idQuiz,
         (quiz.questions as List<NewQuestionModel>),
@@ -198,8 +189,12 @@ class QuizService implements GenericService<QuizDefaultModel> {
     }
   }
 
-  Future<bool> _insertQuizLinkedGroups(
-      List<GroupModel> groups, String idQuiz) async {
+  Future<bool> insertQuizLinkedGroups(
+    List<GroupModel> groups,
+    String idQuiz,
+    String idCompany,
+    DateTime date,
+  ) async {
     try {
       if (groups.isEmpty) {
         throw UnknownError(
@@ -212,6 +207,8 @@ class QuizService implements GenericService<QuizDefaultModel> {
         return {
           'id_group': e.id,
           'id_quiz': idQuiz,
+          'id_company': idCompany,
+          'date': date.toDateHasura(),
         };
       }).toList();
 
@@ -222,7 +219,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
         },
       );
 
-      return HelperHasura.returnResponseBool(response, 'insert_quiz_group');
+      return HelperHasura.returnResponseBool(response, 'insert_quiz_vincule');
     } on ClientError {
       rethrow;
     } on MapFieldsError {
