@@ -175,8 +175,6 @@ class QuizApi extends Api {
 
       final idQuiz = map.getString('id_quiz');
 
-      final idCompany = map.getString('id_company');
-
       final date = map.getDateTime('date');
 
       final groupsMap = map.getList<Map<String, dynamic>>('groups');
@@ -191,7 +189,6 @@ class QuizApi extends Api {
           await (_quizService as QuizService).insertQuizLinkedGroups(
         groups,
         idQuiz,
-        idCompany,
         date,
       );
 

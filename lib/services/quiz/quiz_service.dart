@@ -192,7 +192,6 @@ class QuizService implements GenericService<QuizDefaultModel> {
   Future<bool> insertQuizLinkedGroups(
     List<GroupModel> groups,
     String idQuiz,
-    String idCompany,
     DateTime date,
   ) async {
     try {
@@ -207,7 +206,6 @@ class QuizService implements GenericService<QuizDefaultModel> {
         return {
           'id_group': e.id,
           'id_quiz': idQuiz,
-          'id_company': idCompany,
           'date': date.toDateHasura(),
         };
       }).toList();
