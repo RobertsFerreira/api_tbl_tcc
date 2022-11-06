@@ -20,7 +20,8 @@ class VinculoQuiz {
     final quizHeader = mapFields.getMap<String, dynamic>('quiz_header');
     final quizHeaderFields = MapFields.load(quizHeader);
 
-    final groupMap = mapFields.getList<Map<String, dynamic>>('quiz_group');
+    final groupMap =
+        quizHeaderFields.getList<Map<String, dynamic>>('quiz_groups');
 
     final groups = groupMap.map((e) => CustomGroup.fromMap(e)).toList();
 
@@ -35,7 +36,7 @@ class VinculoQuiz {
     return {
       'title': title,
       'date': date.toDateHasuraWithoutTime(),
-      'groups': groups.map((e) => e.toMap()).toSet().toList(),
+      'groups': groups.map((e) => e.toMap()).toList(),
     };
   }
 
