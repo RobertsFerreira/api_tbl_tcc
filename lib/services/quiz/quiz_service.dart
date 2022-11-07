@@ -105,66 +105,67 @@ class QuizService implements GenericService<QuizDefaultModel> {
     return vinculoQuizzes;
   }
 
-  Future<List<QuizDefaultModel>> getUserOfStudent({
-    String? idCompany,
-    String? idUser,
-    DateTime? from,
-    DateTime? to,
-  }) async {
-    List<QuizDefaultModel> listOfQuizzes = [];
-    try {
-      if (idCompany == null) {
-        throw InvalidIdCompany(
-          message: 'É necessário informar o id da empresa',
-        );
-      }
+  //TODO: Lembrar de remover depois se realmente não for mais usar
+  // Future<List<QuizDefaultModel>> getUserOfStudent({
+  //   String? idCompany,
+  //   String? idUser,
+  //   DateTime? from,
+  //   DateTime? to,
+  // }) async {
+  //   List<QuizDefaultModel> listOfQuizzes = [];
+  //   try {
+  //     if (idCompany == null) {
+  //       throw InvalidIdCompany(
+  //         message: 'É necessário informar o id da empresa',
+  //       );
+  //     }
 
-      if (idUser == null) {
-        throw InvalidIdClass(
-          message: 'É necessário informar o id da turma',
-        );
-      }
+  //     if (idUser == null) {
+  //       throw InvalidIdClass(
+  //         message: 'É necessário informar o id da turma',
+  //       );
+  //     }
 
-      if (from == null) {
-        throw UnknownError(message: 'É necessário informar a data de início');
-      }
+  //     if (from == null) {
+  //       throw UnknownError(message: 'É necessário informar a data de início');
+  //     }
 
-      if (to == null) {
-        throw UnknownError(message: 'É necessário informar a data de fim');
-      }
+  //     if (to == null) {
+  //       throw UnknownError(message: 'É necessário informar a data de fim');
+  //     }
 
-      final queryParams = {
-        'id_company': idCompany,
-        'id_user': idUser,
-        'dataIni': from.toDateHasuraWithoutTime(),
-        'dataFim': to.toDateHasuraWithoutTime(),
-      };
+  //     final queryParams = {
+  //       'id_company': idCompany,
+  //       'id_user': idUser,
+  //       'dataIni': from.toDateHasuraWithoutTime(),
+  //       'dataFim': to.toDateHasuraWithoutTime(),
+  //     };
 
-      final result = await _client.get(
-        '/quizzes/user',
-        queryParameters: queryParams,
-      );
+  //     final result = await _client.get(
+  //       '/quizzes/user',
+  //       queryParameters: queryParams,
+  //     );
 
-      final map = MapFields.load(result);
+  //     final map = MapFields.load(result);
 
-      final listQuizzes = map.getList<Map<String, dynamic>>('quiz_header');
+  //     final listQuizzes = map.getList<Map<String, dynamic>>('quiz_header');
 
-      final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
+  //     final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
 
-      listOfQuizzes = quizzes;
-    } on MapFieldsError {
-      rethrow;
-    } on InvalidIdClass {
-      rethrow;
-    } on ClientError {
-      rethrow;
-    } on UnknownError {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
-    return listOfQuizzes;
-  }
+  //     listOfQuizzes = quizzes;
+  //   } on MapFieldsError {
+  //     rethrow;
+  //   } on InvalidIdClass {
+  //     rethrow;
+  //   } on ClientError {
+  //     rethrow;
+  //   } on UnknownError {
+  //     rethrow;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  //   return listOfQuizzes;
+  // }
 
   @override
   Future<QuizDefaultModel> getById(String id) {

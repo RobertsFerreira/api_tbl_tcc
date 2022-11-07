@@ -92,3 +92,6 @@ Content-Type: application/json
     }
   ]
 }
+
+###
+GET http://localhost:17000/user/quizzes/ca158f4b-76bd-40db-8499-f406dca4bf4d?dateI=2022-10-01&dateF=2022-12-31&answered=false

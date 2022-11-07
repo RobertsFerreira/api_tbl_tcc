@@ -7,14 +7,18 @@ import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import '../../core/infra/bind_injectors/bind_injectors.dart';
 import '../../core/interfaces/api/api.dart';
 import '../../core/interfaces/generic_service/generic_service.dart';
 import '../../models/quiz/answer/answer_user_model.dart';
 import '../../models/quiz/new_quiz_model.dart';
 import '../../models/quiz/quiz_model.dart';
+import 'quiz_user_api.dart';
 
 class QuizApi extends Api {
   final GenericService<QuizDefaultModel> _quizService;
+
+  final quizUserApi = BindInjectors().get<QuizUserApi>();
 
   QuizApi(this._quizService);
 
@@ -47,38 +51,39 @@ class QuizApi extends Api {
       }
     });
 
-    router.get('/quizzes/user/<idCompany>/<idUser>', (
-      Request req,
-      String idCompany,
-      String idUser,
-    ) async {
-      final queryParams = req.url.queryParameters;
+    //TODO: Lembrar de remover depois se realmente não for mais usar
+    // router.get('/quizzes/user/<idCompany>/<idUser>', (
+    //   Request req,
+    //   String idCompany,
+    //   String idUser,
+    // ) async {
+    //   final queryParams = req.url.queryParameters;
 
-      final map = MapFields.load(queryParams);
+    //   final map = MapFields.load(queryParams);
 
-      final quizzes = await (_quizService as QuizService).getUserOfStudent(
-        idCompany: idCompany,
-        idUser: idUser,
-        from: map.getDateTime('from'),
-        to: map.getDateTime('to'),
-      );
+    //   final quizzes = await (_quizService as QuizService).getUserOfStudent(
+    //     idCompany: idCompany,
+    //     idUser: idUser,
+    //     from: map.getDateTime('from'),
+    //     to: map.getDateTime('to'),
+    //   );
 
-      if (quizzes.isEmpty) {
-        return Response(204);
-      } else {
-        final quizMap = quizzes
-            .map(
-              (quiz) => (quiz as QuizModel).toMap(),
-            )
-            .toList();
-        final response = jsonEncode(
-          {
-            'quizzes': quizMap,
-          },
-        );
-        return Response.ok(response);
-      }
-    });
+    //   if (quizzes.isEmpty) {
+    //     return Response(204);
+    //   } else {
+    //     final quizMap = quizzes
+    //         .map(
+    //           (quiz) => (quiz as QuizModel).toMap(),
+    //         )
+    //         .toList();
+    //     final response = jsonEncode(
+    //       {
+    //         'quizzes': quizMap,
+    //       },
+    //     );
+    //     return Response.ok(response);
+    //   }
+    // });
 
     router.post('/quizzes', (Request req) async {
       final body = await req.readAsString();
@@ -234,6 +239,33 @@ class QuizApi extends Api {
         final quizMap = listVinculos
             .map(
               (quiz) => quiz.toMap(),
+            )
+            .toList();
+
+        final response = jsonEncode(
+          {
+            'quizzes': quizMap,
+          },
+        );
+
+        return Response.ok(response);
+      }
+    });
+
+    router.get('/user/quizzes/<idUser>', (Request req, String idUser) async {
+      final params = req.url.queryParameters;
+
+      final quizzes = await quizUserApi.getQuizzesUser(
+        queryParams: params,
+        idUser: idUser,
+      );
+
+      if (quizzes.isEmpty) {
+        return Response(204);
+      } else {
+        final quizMap = quizzes
+            .map(
+              (quiz) => (quiz as QuizModel).toMap(),
             )
             .toList();
 

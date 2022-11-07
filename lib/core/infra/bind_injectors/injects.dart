@@ -2,8 +2,10 @@ import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/export/export_functions.dart';
 import 'package:api_tbl_tcc/services/group/group_service.dart';
 import 'package:api_tbl_tcc/services/login/login.dart';
+import 'package:api_tbl_tcc/services/quiz/quiz_user_service.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
 
+import '../../../apis/quiz/quiz_user_api.dart';
 import '../../../models/type_user/type_user_model.dart';
 import '../../../services/quiz/quiz_service.dart';
 import '../../interfaces/generic_service/generic_service.dart';
@@ -40,6 +42,14 @@ class Injects {
     );
     i.bind<GenericService<QuizDefaultModel>>(
       () => QuizService(i.get<HttpClient>()),
+    );
+
+    i.bind<QuizUserService>(
+      () => QuizUserService(i.get<HttpClient>()),
+    );
+
+    i.bind<QuizUserApi>(
+      () => QuizUserApi(i.get<QuizUserService>()),
     );
 
     i.bind<QuizApi>(
