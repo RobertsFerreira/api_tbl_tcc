@@ -253,6 +253,8 @@ class QuizApi extends Api {
     });
 
     router.get('/user/quizzes/<idUser>', (Request req, String idUser) async {
+      //params = intervalo de datas da pesquisa e
+      //o tipo de quiz quer ver: Somente respondidos ou somente a responder
       final params = req.url.queryParameters;
 
       final quizzes = await quizUserApi.getQuizzesUser(
