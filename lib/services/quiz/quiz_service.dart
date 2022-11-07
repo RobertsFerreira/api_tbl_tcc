@@ -88,7 +88,16 @@ class QuizService implements GenericService<QuizDefaultModel> {
 
       final listQuizzes = map.getList<Map<String, dynamic>>('quiz_vincule');
 
-      final quizzes = listQuizzes.map((e) => VinculoQuiz.fromMap(e)).toList();
+      final quizzesMid =
+          listQuizzes.map((e) => VinculoQuiz.fromMap(e)).toList();
+
+      List<VinculoQuiz> quizzes = [];
+
+      for (final quiz in quizzesMid) {
+        if (quizzes.where((q) => q.title == quiz.title).isEmpty) {
+          quizzes.add(quiz);
+        }
+      }
 
       vinculoQuizzes = quizzes;
     } on MapFieldsError {
