@@ -219,7 +219,7 @@ class QuizApi extends Api {
       }
     });
 
-    router.get('/quizzes/group/linked', (Request req) async {
+    router.get('/quiz/group/linked', (Request req) async {
       final queryParams = req.url.queryParameters;
 
       final map = MapFields.load(queryParams);

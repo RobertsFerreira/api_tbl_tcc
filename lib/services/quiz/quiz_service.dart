@@ -56,19 +56,13 @@ class QuizService implements GenericService<QuizDefaultModel> {
         queryParameters: queryParams,
       );
 
-      final mapFields = MapFields.load(result);
+      final map = MapFields.load(result);
 
-      final listMaps = mapFields.getList<Map<String, dynamic>>('quiz_vincule');
+      final listQuizzes = map.getList<Map<String, dynamic>>('quiz_header');
 
-      for (final maps in listMaps) {
-        final map = MapFields.load(maps);
+      final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
 
-        final quizMaps = map.getMap<String, dynamic>('quiz_header');
-
-        final quiz = QuizModel.fromMap(quizMaps);
-
-        listOfQuizzes.add(quiz);
-      }
+      listOfQuizzes = quizzes;
     } on MapFieldsError {
       rethrow;
     } on InvalidIdClass {
@@ -279,7 +273,15 @@ class QuizService implements GenericService<QuizDefaultModel> {
         },
       );
 
-      return HelperHasura.returnResponseBool(response, 'insert_quiz_vincule');
+      final sizeList = listGroups.length;
+
+      final multipleAffectedRows = sizeList >= 1;
+
+      return HelperHasura.returnResponseBool(
+        response,
+        'insert_quiz_vincule',
+        multipleAffectedRows: multipleAffectedRows,
+      );
     } on ClientError {
       rethrow;
     } on MapFieldsError {
