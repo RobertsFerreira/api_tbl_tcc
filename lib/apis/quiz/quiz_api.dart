@@ -26,12 +26,14 @@ class QuizApi extends Api {
   Handler getHandler({List<Middleware>? middlewares}) {
     Router router = Router();
 
-    router.get('/quizzes/<idCompany>', (
+    router.get('/quizzes/<idCompany>/<idUser>', (
       Request req,
       String idCompany,
+      String idUser,
     ) async {
       final quizzes = await (_quizService as QuizService).get(
         idCompany: idCompany,
+        idUser: idUser,
       );
 
       if (quizzes.isEmpty) {
@@ -51,7 +53,6 @@ class QuizApi extends Api {
       }
     });
 
-    //TODO: Lembrar de remover depois se realmente não for mais usar
     // router.get('/quizzes/user/<idCompany>/<idUser>', (
     //   Request req,
     //   String idCompany,

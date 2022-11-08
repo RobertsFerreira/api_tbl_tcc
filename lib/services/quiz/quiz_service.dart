@@ -30,6 +30,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
   @override
   Future<List<QuizDefaultModel>> get({
     String? idCompany,
+    String? idUser,
   }) async {
     List<QuizDefaultModel> listOfQuizzes = [];
     try {
@@ -38,8 +39,16 @@ class QuizService implements GenericService<QuizDefaultModel> {
           message: 'É necessário informar o id da empresa',
         );
       }
+
+      if (idUser == null) {
+        throw UnknownError(
+          message: 'É necessário informar o id do usuário',
+        );
+      }
+
       final queryParams = {
         'id_company': idCompany,
+        'id_user': idUser,
       };
 
       final result = await _client.get(
@@ -47,13 +56,19 @@ class QuizService implements GenericService<QuizDefaultModel> {
         queryParameters: queryParams,
       );
 
-      final map = MapFields.load(result);
+      final mapFields = MapFields.load(result);
 
-      final listQuizzes = map.getList<Map<String, dynamic>>('quiz_header');
+      final listMaps = mapFields.getList<Map<String, dynamic>>('quiz_vincule');
 
-      final quizzes = listQuizzes.map((e) => QuizModel.fromMap(e)).toList();
+      for (final maps in listMaps) {
+        final map = MapFields.load(maps);
 
-      listOfQuizzes = quizzes;
+        final quizMaps = map.getMap<String, dynamic>('quiz_header');
+
+        final quiz = QuizModel.fromMap(quizMaps);
+
+        listOfQuizzes.add(quiz);
+      }
     } on MapFieldsError {
       rethrow;
     } on InvalidIdClass {
@@ -114,7 +129,6 @@ class QuizService implements GenericService<QuizDefaultModel> {
     return vinculoQuizzes;
   }
 
-  //TODO: Lembrar de remover depois se realmente não for mais usar
   // Future<List<QuizDefaultModel>> getUserOfStudent({
   //   String? idCompany,
   //   String? idUser,
