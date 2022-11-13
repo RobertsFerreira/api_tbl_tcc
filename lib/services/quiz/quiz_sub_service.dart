@@ -145,9 +145,13 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
 
       final resultMap = MapFields.load(result);
 
-      final mapReturn = resultMap.getMap<String, dynamic>('quiz_header');
+      final mapReturn = resultMap.getList<Map<String, dynamic>>('quiz_header');
 
-      final mapFields = MapFields.load(mapReturn);
+      if (mapReturn.length > 1) {
+        throw UnknownError(message: 'Mais de 1 dado retornado');
+      }
+
+      final mapFields = MapFields.load(mapReturn.first);
 
       final quizGroupMap =
           mapFields.getList<Map<String, dynamic>>('quiz_groups');
@@ -156,9 +160,13 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
         throw UnknownError(message: 'Mais de 1 id retornado');
       }
 
-      final mapGroup = MapFields.load(quizGroupMap.first);
+      final mapGroups = MapFields.load(quizGroupMap.first);
 
-      final idGroup = mapGroup.getString('id_group');
+      final mapGroup = mapGroups.getMap<String, dynamic>('group');
+
+      final mapFieldsGroup = MapFields.load(mapGroup);
+
+      final idGroup = mapFieldsGroup.getString('id');
 
       final listAnswers = answersGroup
           .map(
