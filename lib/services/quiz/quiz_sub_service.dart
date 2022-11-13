@@ -188,11 +188,47 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
         },
       );
 
-      return HelperHasura.returnResponseBool(
+      final resultHasura = HelperHasura.returnResponseBool(
         response,
         'insert_answer_group',
         multipleAffectedRows: true,
       );
+
+      if (!resultHasura) {
+        throw UnknownError(
+          message: 'Erro ao inserir respostas do grupo',
+        );
+      }
+
+      final updateStatusQuiz = await updateQuizAnswered(idQuiz, idGroup);
+
+      return updateStatusQuiz;
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateQuizAnswered(String idQuiz, String idGroup) async {
+    try {
+      final body = {
+        'id_quiz': idQuiz,
+        'id_group': idGroup,
+      };
+
+      final response = await _client.put(
+        '/quizzes/answered',
+        body: body,
+      );
+
+      final result =
+          HelperHasura.returnResponseBool(response, 'update_quiz_vincule');
+      return result;
     } on ClientError {
       rethrow;
     } on MapFieldsError {

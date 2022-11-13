@@ -103,40 +103,6 @@ class QuizApi extends Api {
       return Response.ok('Quiz');
     });
 
-    router.put('/quizzes/answered/', (
-      Request req,
-    ) async {
-      final body = await req.readAsString();
-
-      final map = MapFields.load(body);
-
-      final idQuiz = map.getString('id_quiz');
-
-      final idGroup = map.getString('id_group');
-
-      final updated = await (_quizService as QuizService)
-          .updateQuizAnswered(idQuiz, idGroup);
-
-      if (updated) {
-        return Response.ok(
-          jsonEncode(
-            {
-              'message': 'Quiz atualizado com sucesso',
-            },
-          ),
-        );
-      } else {
-        return Response(
-          400,
-          body: jsonEncode(
-            {
-              'message': 'Erro ao atualizar o quiz',
-            },
-          ),
-        );
-      }
-    });
-
     router.post('/quizzes/answers/users', (Request req) async {
       final body = await req.readAsString();
 

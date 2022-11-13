@@ -438,30 +438,4 @@ class QuizService implements GenericService<QuizDefaultModel> {
     // TODO: implement update
     throw UnimplementedError();
   }
-
-  Future<bool> updateQuizAnswered(String idQuiz, String idGroup) async {
-    try {
-      final body = {
-        'id_quiz': idQuiz,
-        'id_group': idGroup,
-      };
-
-      final response = await _client.put(
-        '/quizzes/answered',
-        body: body,
-      );
-
-      final result =
-          HelperHasura.returnResponseBool(response, 'update_quiz_group');
-      return result;
-    } on ClientError {
-      rethrow;
-    } on MapFieldsError {
-      rethrow;
-    } on UnknownError {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
-  }
 }

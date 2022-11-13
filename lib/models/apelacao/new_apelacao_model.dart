@@ -11,10 +11,26 @@ class NewApelacaoModel extends ApelacaoDefault {
     required super.apelacao,
   });
 
+  NewApelacaoModel copyWith({
+    String? idGroup,
+    String? idUser,
+    String? idCompany,
+    String? idQuiz,
+    String? apelacao,
+  }) {
+    return NewApelacaoModel(
+      idGroup: idGroup ?? this.idGroup,
+      idUser: idUser ?? this.idUser,
+      idCompany: idCompany ?? this.idCompany,
+      idQuiz: idQuiz ?? this.idQuiz,
+      apelacao: apelacao ?? this.apelacao,
+    );
+  }
+
   factory NewApelacaoModel.fromMap(Map<String, dynamic> map) {
     final mapFields = MapFields.load(map);
     return NewApelacaoModel(
-      idGroup: mapFields.getString('id_group'),
+      idGroup: mapFields.getString('id_group', ''),
       idUser: mapFields.getString('id_user'),
       idCompany: mapFields.getString('id_company'),
       idQuiz: mapFields.getString('id_quiz'),
