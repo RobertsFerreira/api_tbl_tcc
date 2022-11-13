@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:api_tbl_tcc/core/interfaces/api/api.dart';
 import 'package:api_tbl_tcc/core/models/apelacao/apelacao_default.dart';
-import 'package:api_tbl_tcc/models/apelacao/new_apelacao_model.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 import '../../core/interfaces/generic_service/generic_service.dart';
+import '../../models/apelacao/new_apelacao_model.dart';
 
 class ApelacaoApi extends Api {
   final GenericService<ApelacaoDefault> apelacaoService;
@@ -25,7 +25,7 @@ class ApelacaoApi extends Api {
 
         final mapFields = MapFields.load(body);
 
-        final mapApelacao = mapFields.getMap<String, String>('apelacao');
+        final mapApelacao = mapFields.getMap<String, dynamic>('apelacao');
 
         final apelacao = NewApelacaoModel.fromMap(mapApelacao);
 
