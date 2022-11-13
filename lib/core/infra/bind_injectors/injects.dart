@@ -1,14 +1,17 @@
 import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
 import 'package:api_tbl_tcc/export/export_functions.dart';
+import 'package:api_tbl_tcc/services/apelacao/apelacao_service.dart';
 import 'package:api_tbl_tcc/services/group/group_service.dart';
 import 'package:api_tbl_tcc/services/login/login.dart';
 import 'package:api_tbl_tcc/services/quiz/quiz_sub_service.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
 
+import '../../../apis/apelacao/apelacao_api.dart';
 import '../../../apis/quiz/quiz_sub_api.dart';
 import '../../../models/type_user/type_user_model.dart';
 import '../../../services/quiz/quiz_service.dart';
 import '../../interfaces/generic_service/generic_service.dart';
+import '../../models/apelacao/apelacao_default.dart';
 import '../../models/group/group_default.dart';
 import '../../models/user/user_default.dart';
 import 'bind_injectors.dart';
@@ -55,6 +58,17 @@ class Injects {
     i.bind<QuizApi>(
       () => QuizApi(i.get<GenericService<QuizDefaultModel>>()),
     );
+
+    i.bind<ApelacaoService>(
+      () => ApelacaoService(i.get<HttpClient>()),
+    );
+
+    i.bind<ApelacaoApi>(
+      () => ApelacaoApi(
+        i.get<GenericService<ApelacaoDefault>>(),
+      ),
+    );
+
     return i;
   }
 }
