@@ -1,0 +1,12 @@
+POST http://localhost:17000/apelacao
+Content-Type: application/json
+
+{
+   "apelacao": { 
+        "id_group": "d73eba0d-b85e-478f-bdde-e2970ff3e40a",
+        "id_user": "9ff83c06-1af0-4219-a808-3494980e1dc0",
+        "id_company": "1566d92f-9119-44d5-830e-9c3f94eb657c",
+        "id_quiz": "4f66b946-1f18-4470-9986-327c7ec64c62",
+        "apelacao": "teste"
+    }
+}
