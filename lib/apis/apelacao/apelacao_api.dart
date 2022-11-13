@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:api_tbl_tcc/core/interfaces/api/api.dart';
+import 'package:api_tbl_tcc/core/models/apelacao/apelacao_default.dart';
 import 'package:api_tbl_tcc/models/apelacao/new_apelacao_model.dart';
-import 'package:api_tbl_tcc/services/apelacao/apelacao_service.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import '../../core/interfaces/generic_service/generic_service.dart';
+
 class ApelacaoApi extends Api {
-  final ApelacaoService apelacaoService;
+  final GenericService<ApelacaoDefault> apelacaoService;
 
   ApelacaoApi(this.apelacaoService);
 
