@@ -22,6 +22,7 @@ Future<void> main() async {
       .add(i.get<UserApi>().getHandler())
       .add(i.get<GroupApi>().getHandler())
       .add(i.get<QuizApi>().getHandler())
+      .add(i.get<ApelacaoApi>().getHandler())
       .handler;
 
   var handler = Pipeline()
