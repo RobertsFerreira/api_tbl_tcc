@@ -1,3 +1,4 @@
+export 'package:api_tbl_tcc/apis/apelacao/apelacao_api.dart';
 export 'package:api_tbl_tcc/apis/group/group_api.dart';
 export 'package:api_tbl_tcc/apis/login/login_api.dart';
 export 'package:api_tbl_tcc/apis/quiz/quiz_api.dart';
