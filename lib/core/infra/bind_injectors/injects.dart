@@ -6,7 +6,6 @@ import 'package:api_tbl_tcc/services/login/login.dart';
 import 'package:api_tbl_tcc/services/quiz/quiz_sub_service.dart';
 import 'package:api_tbl_tcc/services/user/user_service.dart';
 
-import '../../../apis/apelacao/apelacao_api.dart';
 import '../../../apis/quiz/quiz_sub_api.dart';
 import '../../../models/type_user/type_user_model.dart';
 import '../../../services/quiz/quiz_service.dart';
@@ -59,7 +58,7 @@ class Injects {
       () => QuizApi(i.get<GenericService<QuizDefaultModel>>()),
     );
 
-    i.bind<ApelacaoService>(
+    i.bind<GenericService<ApelacaoDefault>>(
       () => ApelacaoService(i.get<HttpClient>()),
     );
 
