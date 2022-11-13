@@ -1,19 +1,19 @@
-import 'package:api_tbl_tcc/core/interfaces/clients/http_client.dart';
-import 'package:api_tbl_tcc/core/interfaces/generic_service/generic_service.dart';
-import 'package:api_tbl_tcc/core/models/errors/arguments/invalid_argument_hasura.dart';
-import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
-import 'package:api_tbl_tcc/models/group/group_model.dart';
-import 'package:api_tbl_tcc/models/quiz/new_quiz_model.dart';
-import 'package:api_tbl_tcc/models/quiz/question/new_question_model.dart';
-import 'package:api_tbl_tcc/models/quiz/vinculo_quiz/vinculo_quiz.dart';
-import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
+import '../../core/interfaces/clients/http_client.dart';
+import '../../core/interfaces/generic_service/generic_service.dart';
+import '../../core/models/errors/arguments/invalid_argument_hasura.dart';
 import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
+import '../../core/models/quiz/quiz_default_model.dart';
+import '../../models/group/group_model.dart';
 import '../../models/quiz/answer/answer_user_model.dart';
 import '../../models/quiz/answer/new_answer_model.dart';
+import '../../models/quiz/new_quiz_model.dart';
+import '../../models/quiz/question/new_question_model.dart';
 import '../../models/quiz/quiz_model.dart';
+import '../../models/quiz/vinculo_quiz/vinculo_quiz.dart';
+import '../../utils/hasura/helper_extensions.dart';
 import '../../utils/hasura/helper_hasura.dart';
 
 class QuizService implements GenericService<QuizDefaultModel> {
@@ -400,27 +400,37 @@ class QuizService implements GenericService<QuizDefaultModel> {
   }
 
   Future<bool> insertAnswersUser(List<AnswerUserModel> answersUser) async {
-    final listAnswers = answersUser.map((e) => e.toMap()).toList();
+    try {
+      final listAnswers = answersUser.map((e) => e.toMap()).toList();
 
-    if (listAnswers.isEmpty) {
-      throw UnknownError(
-        message:
-            'Erro ao inserir respostas do usuário, lista de respostas esta vazia',
+      if (listAnswers.isEmpty) {
+        throw UnknownError(
+          message:
+              'Erro ao inserir respostas do usuário, lista de respostas esta vazia',
+        );
+      }
+
+      final response = await _client.post(
+        '/questions/answers/users',
+        body: {
+          'answers': listAnswers,
+        },
       );
+
+      return HelperHasura.returnResponseBool(
+        response,
+        'insert_answer_user',
+        multipleAffectedRows: true,
+      );
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
-
-    final response = await _client.post(
-      '/questions/answers/users',
-      body: {
-        'answers': listAnswers,
-      },
-    );
-
-    return HelperHasura.returnResponseBool(
-      response,
-      'insert_answer_user',
-      multipleAffectedRows: true,
-    );
   }
 
   @override

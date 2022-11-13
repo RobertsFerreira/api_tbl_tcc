@@ -1,3 +1,4 @@
+import 'package:api_tbl_tcc/models/quiz/answer/new_answer_group_model.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/interfaces/clients/http_client.dart';
@@ -6,11 +7,12 @@ import '../../core/models/errors/client/client_error.dart';
 import '../../core/models/errors/generic_error/generic_error.dart';
 import '../../core/models/quiz/quiz_default_model.dart';
 import '../../models/quiz/quiz_model.dart';
+import '../../utils/hasura/helper_hasura.dart';
 
-class QuizUserService implements GenericService<QuizDefaultModel> {
+class QuizSubService implements GenericService<QuizDefaultModel> {
   final HttpClient _client;
 
-  QuizUserService(this._client);
+  QuizSubService(this._client);
 
   @override
   Future<bool> delete(String id) {
@@ -125,5 +127,41 @@ class QuizUserService implements GenericService<QuizDefaultModel> {
   @override
   Future<bool> update(QuizDefaultModel t) {
     throw UnimplementedError();
+  }
+
+  Future<bool> insertAnswersGroup(
+    List<NewAnswerGroupModel> answersGroup,
+  ) async {
+    try {
+      final listAnswers = answersGroup.map((e) => e.toMap()).toList();
+
+      if (listAnswers.isEmpty) {
+        throw UnknownError(
+          message:
+              'Erro ao inserir respostas do grupo, lista de respostas esta vazia',
+        );
+      }
+
+      final response = await _client.post(
+        '/questions/answers/group',
+        body: {
+          'answers': listAnswers,
+        },
+      );
+
+      return HelperHasura.returnResponseBool(
+        response,
+        'insert_answer_group',
+        multipleAffectedRows: true,
+      );
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

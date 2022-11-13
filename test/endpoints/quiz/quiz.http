@@ -95,3 +95,18 @@ Content-Type: application/json
 
 ###
 GET http://localhost:17000/user/quizzes/ca158f4b-76bd-40db-8499-f406dca4bf4d?dateI=2022-10-01&dateF=2022-12-31&answered=false
+
+###
+POST http://localhost:17000/quizzes/answers/group
+Content-Type: application/json
+
+{
+ "answers": [
+    {
+      "id_company": "1566d92f-9119-44d5-830e-9c3f94eb657c",
+      "id_answer": "bb929c3d-8bb3-4826-8f1e-c174656c4910",
+      "id_group": "d73eba0d-b85e-478f-bdde-e2970ff3e40a",
+      "score": 4
+    }
+ ]
+}

@@ -13,12 +13,12 @@ import '../../core/interfaces/generic_service/generic_service.dart';
 import '../../models/quiz/answer/answer_user_model.dart';
 import '../../models/quiz/new_quiz_model.dart';
 import '../../models/quiz/quiz_model.dart';
-import 'quiz_user_api.dart';
+import 'quiz_sub_api.dart';
 
 class QuizApi extends Api {
   final GenericService<QuizDefaultModel> _quizService;
 
-  final quizUserApi = BindInjectors().get<QuizUserApi>();
+  final quizSubApi = BindInjectors().get<QuizSubApi>();
 
   QuizApi(this._quizService);
 
@@ -258,7 +258,7 @@ class QuizApi extends Api {
       //o tipo de quiz quer ver: Somente respondidos ou somente a responder
       final params = req.url.queryParameters;
 
-      final quizzes = await quizUserApi.getQuizzesUser(
+      final quizzes = await quizSubApi.getQuizzesUser(
         queryParams: params,
         idUser: idUser,
       );
@@ -279,6 +279,29 @@ class QuizApi extends Api {
         );
 
         return Response.ok(response);
+      }
+    });
+
+    router.post('/quizzes/answers/group', (Request req) async {
+      final inserted = await quizSubApi.insertAnswersGroup(request: req);
+      if (inserted) {
+        return Response(
+          201,
+          body: jsonEncode(
+            {
+              'message': 'Respostas inseridas com sucesso',
+            },
+          ),
+        );
+      } else {
+        return Response(
+          400,
+          body: jsonEncode(
+            {
+              'message': 'Erro ao inserir as respostas',
+            },
+          ),
+        );
       }
     });
 
