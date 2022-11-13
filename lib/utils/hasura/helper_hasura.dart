@@ -55,20 +55,20 @@ class HelperHasura {
 
   static dynamic returningHasura(
     Map<String, dynamic> response, {
-    required String keyMap,
+    required String keyHeaderMap,
     required String keyValueSearch,
   }) {
     MapFields mapFields = MapFields.load(response);
-    final mapResponse = mapFields.getMap<String, dynamic>(keyMap, {});
+    final mapResponse = mapFields.getMap<String, dynamic>(keyHeaderMap, {});
     if (mapResponse.isEmpty) {
-      _getError(keyMap, keyValueSearch);
+      _getError(keyHeaderMap, keyValueSearch);
     }
 
     mapFields = MapFields.load(mapResponse);
     final listReturning =
         mapFields.getList<Map<String, dynamic>>('returning', []);
     if (listReturning.isEmpty || listReturning.length > 1) {
-      _getError('$keyMap.returning', keyValueSearch);
+      _getError('$keyHeaderMap.returning', keyValueSearch);
     }
 
     mapFields = MapFields.load(listReturning.first);

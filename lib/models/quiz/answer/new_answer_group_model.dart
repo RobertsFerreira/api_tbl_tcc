@@ -13,6 +13,20 @@ class NewAnswerGroupModel {
     required this.idGroup,
   });
 
+  NewAnswerGroupModel copyWith({
+    String? idAnswer,
+    String? idCompany,
+    double? score,
+    String? idGroup,
+  }) {
+    return NewAnswerGroupModel(
+      idAnswer: idAnswer ?? this.idAnswer,
+      idCompany: idCompany ?? this.idCompany,
+      score: score ?? this.score,
+      idGroup: idGroup ?? this.idGroup,
+    );
+  }
+
   factory NewAnswerGroupModel.fromMap(Map<String, dynamic> map) {
     final maps = MapFields.load(map);
     return NewAnswerGroupModel(

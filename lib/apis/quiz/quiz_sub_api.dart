@@ -37,14 +37,18 @@ class QuizSubApi {
 
       final mapFields = MapFields.load(body);
 
+      final idUser = mapFields.getString('id_user');
+
+      final idQuiz = mapFields.getString('id_quiz');
+
       final listAnswers = mapFields.getList<Map<String, dynamic>>('answers');
 
       final answers = listAnswers
           .map((answer) => NewAnswerGroupModel.fromMap(answer))
           .toList();
 
-      final result =
-          await (quizUserService as QuizSubService).insertAnswersGroup(answers);
+      final result = await (quizUserService as QuizSubService)
+          .insertAnswersGroup(answers, idUser, idQuiz);
 
       return result;
     } catch (e) {

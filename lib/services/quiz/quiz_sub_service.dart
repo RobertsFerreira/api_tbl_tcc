@@ -131,9 +131,40 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
 
   Future<bool> insertAnswersGroup(
     List<NewAnswerGroupModel> answersGroup,
+    String idUser,
+    String idQuiz,
   ) async {
     try {
-      final listAnswers = answersGroup.map((e) => e.toMap()).toList();
+      final result = await _client.get(
+        '/user/quiz/id',
+        queryParameters: {
+          'id_quiz': idQuiz,
+          'id_user': idUser,
+        },
+      );
+
+      final resultMap = MapFields.load(result);
+
+      final mapReturn = resultMap.getMap<String, dynamic>('quiz_header');
+
+      final mapFields = MapFields.load(mapReturn);
+
+      final quizGroupMap =
+          mapFields.getList<Map<String, dynamic>>('quiz_groups');
+
+      if (quizGroupMap.length > 1) {
+        throw UnknownError(message: 'Mais de 1 id retornado');
+      }
+
+      final mapGroup = MapFields.load(quizGroupMap.first);
+
+      final idGroup = mapGroup.getString('id_group');
+
+      final listAnswers = answersGroup
+          .map(
+            (e) => e.copyWith(idGroup: idGroup).toMap(),
+          )
+          .toList();
 
       if (listAnswers.isEmpty) {
         throw UnknownError(

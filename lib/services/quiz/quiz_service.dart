@@ -208,7 +208,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
 
       final idQuiz = HelperHasura.returningHasura(
         response,
-        keyMap: 'insert_quiz_header',
+        keyHeaderMap: 'insert_quiz_header',
         keyValueSearch: 'id',
       );
 
@@ -319,7 +319,7 @@ class QuizService implements GenericService<QuizDefaultModel> {
         );
         final idQuestions = HelperHasura.returningHasura(
           response,
-          keyMap: 'insert_quiz_questions',
+          keyHeaderMap: 'insert_quiz_questions',
           keyValueSearch: 'id',
         );
         if (idQuestions.isEmpty) {
