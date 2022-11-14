@@ -34,41 +34,7 @@ class ApelacaoService implements GenericService<ApelacaoDefault> {
   @override
   Future<bool> insert(ApelacaoDefault apelacao) async {
     try {
-      final result = await _client.get(
-        '/user/quiz/id',
-        queryParameters: {
-          'id_quiz': apelacao.idQuiz,
-          'id_user': apelacao.idUser,
-        },
-      );
-
-      final resultMap = MapFields.load(result);
-
-      final mapReturn = resultMap.getList<Map<String, dynamic>>('quiz_header');
-
-      if (mapReturn.length > 1) {
-        throw UnknownError(message: 'Mais de 1 dado retornado');
-      }
-
-      final mapFields = MapFields.load(mapReturn.first);
-
-      final quizGroupMap =
-          mapFields.getList<Map<String, dynamic>>('quiz_groups');
-
-      if (quizGroupMap.length > 1) {
-        throw UnknownError(message: 'Mais de 1 id retornado');
-      }
-
-      final mapGroups = MapFields.load(quizGroupMap.first);
-
-      final mapGroup = mapGroups.getMap<String, dynamic>('group');
-
-      final mapFieldsGroup = MapFields.load(mapGroup);
-
-      final idGroup = mapFieldsGroup.getString('id');
-
-      final apelacaoMap =
-          (apelacao as NewApelacaoModel).copyWith(idGroup: idGroup).toMap();
+      final apelacaoMap = (apelacao as NewApelacaoModel).toMap();
       final listApelacao = [apelacaoMap];
       final response = await _client.post(
         'apelacao',
