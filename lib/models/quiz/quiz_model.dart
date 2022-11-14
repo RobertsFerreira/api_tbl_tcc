@@ -1,13 +1,15 @@
-import 'package:api_tbl_tcc/core/models/quiz/quiz_default_model.dart';
-import 'package:api_tbl_tcc/models/quiz/question/quiz_question_model.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/quiz/question_default_model.dart';
+import '../../core/models/quiz/quiz_default_model.dart';
+import '../../utils/hasura/helper_extensions.dart';
 import '../user/user_model.dart';
+import 'question/quiz_question_model.dart';
 
 class QuizModel extends QuizDefaultModel {
   final String id;
   final String? idGroup;
+  final DateTime? date;
 
   QuizModel({
     required this.id,
@@ -17,6 +19,7 @@ class QuizModel extends QuizDefaultModel {
     required super.questions,
     required super.title,
     this.idGroup,
+    this.date,
   });
 
   QuizModel copyWith({
@@ -27,6 +30,7 @@ class QuizModel extends QuizDefaultModel {
     List<QuestionDefaultModel>? questions,
     String? title,
     String? idGroup,
+    DateTime? date,
   }) {
     return QuizModel(
       id: id ?? this.id,
@@ -36,6 +40,7 @@ class QuizModel extends QuizDefaultModel {
       questions: questions ?? this.questions,
       title: title ?? this.title,
       idGroup: idGroup ?? this.idGroup,
+      date: date ?? this.date,
     );
   }
 
@@ -72,6 +77,7 @@ class QuizModel extends QuizDefaultModel {
       'questions': questions.map((e) => (e as QuestionModel).toMap()).toList(),
       'title': title,
       if (idGroup != null) 'id_group': idGroup,
+      if (date != null) 'date': date?.toDateHasuraWithoutTime(),
     };
   }
 }

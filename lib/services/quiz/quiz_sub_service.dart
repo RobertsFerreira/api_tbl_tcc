@@ -1,4 +1,5 @@
 import 'package:api_tbl_tcc/models/quiz/answer/new_answer_group_model.dart';
+import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/interfaces/clients/http_client.dart';
@@ -74,6 +75,22 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
           .toSet()
           .toList();
 
+      if (idsQuizzes.isEmpty) {
+        return [];
+      }
+
+      final dateQuiz = listMapIds
+          .map(
+            (e) {
+              final mapFields = MapFields.load(e);
+              final dateQuiz = mapFields.getDateTime('date');
+              return dateQuiz;
+            },
+          )
+          .toSet()
+          .toList()
+          .first;
+
       for (final id in idsQuizzes) {
         final response = await _client.get(
           '/user/quizzes',
@@ -95,7 +112,8 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
         final idGroup = mapF.getString('id_group');
         final List<QuizModel> quizzes = quizMap
             .map(
-              (q) => QuizModel.fromMap(q).copyWith(idGroup: idGroup),
+              (q) => QuizModel.fromMap(q)
+                  .copyWith(idGroup: idGroup, date: dateQuiz),
             )
             .toList();
         listOfQuizzes.addAll(quizzes);
@@ -133,6 +151,7 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
     List<NewAnswerGroupModel> answersGroup,
     String idUser,
     String idQuiz,
+    DateTime date,
   ) async {
     try {
       final idGroup = answersGroup.first.idGroup;
@@ -169,7 +188,7 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
         );
       }
 
-      final updateStatusQuiz = await updateQuizAnswered(idQuiz, idGroup);
+      final updateStatusQuiz = await updateQuizAnswered(idQuiz, idGroup, date);
 
       return updateStatusQuiz;
     } on ClientError {
@@ -183,11 +202,13 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
     }
   }
 
-  Future<bool> updateQuizAnswered(String idQuiz, String idGroup) async {
+  Future<bool> updateQuizAnswered(
+      String idQuiz, String idGroup, DateTime date) async {
     try {
       final body = {
         'id_quiz': idQuiz,
         'id_group': idGroup,
+        'date': date.toDateHasura(),
       };
 
       final response = await _client.put(

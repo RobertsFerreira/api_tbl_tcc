@@ -41,6 +41,8 @@ class QuizSubApi {
 
       final idQuiz = mapFields.getString('id_quiz');
 
+      final data = mapFields.getDateTime('date');
+
       final listAnswers = mapFields.getList<Map<String, dynamic>>('answers');
 
       final answers = listAnswers
@@ -48,7 +50,7 @@ class QuizSubApi {
           .toList();
 
       final result = await (quizUserService as QuizSubService)
-          .insertAnswersGroup(answers, idUser, idQuiz);
+          .insertAnswersGroup(answers, idUser, idQuiz, data);
 
       return result;
     } catch (e) {
