@@ -194,10 +194,13 @@ class QuizApi extends Api {
 
       final dataFim = map.getDateTime('data_fim');
 
+      final answered = map.getBool('answered');
+
       final listVinculos =
           await (_quizService as QuizService).getAllVinculoQuizzes(
         dataIni,
         dataFim,
+        answered,
       );
 
       if (listVinculos.isEmpty) {

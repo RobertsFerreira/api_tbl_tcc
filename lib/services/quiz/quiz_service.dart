@@ -80,12 +80,14 @@ class QuizService implements GenericService<QuizDefaultModel> {
   Future<List<VinculoQuiz>> getAllVinculoQuizzes(
     DateTime initialDate,
     DateTime finalDate,
+    bool answered,
   ) async {
     List<VinculoQuiz> vinculoQuizzes = [];
     try {
       final queryParams = {
         'data_ini': initialDate.toDateHasura(),
         'data_fim': finalDate.toDateHasura(),
+        'answered': answered,
       };
 
       final result = await _client.get(
