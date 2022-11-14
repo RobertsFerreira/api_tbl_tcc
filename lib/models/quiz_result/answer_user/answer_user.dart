@@ -19,7 +19,7 @@ class AnswerUser {
     return AnswerUser(
       scoreAnswered: mapFields.getDouble('score_answer'),
       scoredScore: mapFields.getDouble('scored_score'),
-      userName: userFields.getString('userName'),
+      userName: userFields.getString('name'),
     );
   }
 

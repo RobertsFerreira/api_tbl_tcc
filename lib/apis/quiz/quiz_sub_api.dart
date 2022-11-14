@@ -1,3 +1,4 @@
+import 'package:api_tbl_tcc/models/quiz_result/quiz_result.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
 
@@ -51,6 +52,23 @@ class QuizSubApi {
 
       final result = await (quizUserService as QuizSubService)
           .insertAnswersGroup(answers, idUser, idQuiz, data);
+
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<QuizResult>> getQuizResults({required Request request}) async {
+    try {
+      final queryParams = request.url.queryParameters;
+
+      final mapFields = MapFields.load(queryParams);
+
+      final idQuiz = mapFields.getString('id_quiz');
+
+      final result =
+          await (quizUserService as QuizSubService).getAllQuizResults(idQuiz);
 
       return result;
     } catch (e) {

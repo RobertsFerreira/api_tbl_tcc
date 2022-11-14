@@ -1,4 +1,5 @@
 import 'package:api_tbl_tcc/models/quiz/answer/new_answer_group_model.dart';
+import 'package:api_tbl_tcc/models/quiz_result/quiz_result.dart';
 import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
@@ -228,5 +229,38 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<List<QuizResult>> getAllQuizResults(String idQuiz) async {
+    try {
+      final response = await _client.get(
+        '/quizzes/result',
+        queryParameters: {
+          'id_quiz': idQuiz,
+        },
+      );
+
+      final mapFields = MapFields.load(response);
+
+      final listResults =
+          mapFields.getList<Map<String, dynamic>>('quiz_header');
+
+      final listQuizResults = listResults
+          .map(
+            (result) => QuizResult.fromMap(result),
+          )
+          .toList();
+
+      return listQuizResults;
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return [];
   }
 }

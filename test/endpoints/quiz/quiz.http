@@ -110,3 +110,6 @@ Content-Type: application/json
     }
  ]
 }
+
+###
+GET http://localhost:17000/quizzes/result?id_quiz=6d29193f-ad2c-48b7-a914-baf2ed896c91
