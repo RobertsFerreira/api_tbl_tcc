@@ -4,11 +4,13 @@ import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 class VinculoQuiz {
+  final String id;
   final String title;
   final DateTime date;
   final List<CustomGroup> groups;
 
   VinculoQuiz({
+    required this.id,
     required this.title,
     required this.date,
     required this.groups,
@@ -26,6 +28,7 @@ class VinculoQuiz {
     final groups = groupMap.map((e) => CustomGroup.fromMap(e)).toList();
 
     return VinculoQuiz(
+      id: mapFields.getString('id_quiz'),
       title: quizHeaderFields.getString('title'),
       date: mapFields.getDateTime('date'),
       groups: groups,
@@ -34,6 +37,7 @@ class VinculoQuiz {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'title': title,
       'date': date.toDateHasuraWithoutTime(),
       'groups': groups.map((e) => e.toMap()).toList(),
