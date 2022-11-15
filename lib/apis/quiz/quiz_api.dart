@@ -292,6 +292,24 @@ class QuizApi extends Api {
       }
     });
 
+    router.get('/quiz/result/user', (Request req) async {
+      final result = await quizSubApi.getQuizResultsUser(request: req);
+
+      if (result.isEmpty) {
+        return Response(204);
+      } else {
+        final quizMap = result.map((quiz) => quiz.toMap()).toList();
+
+        final response = jsonEncode(
+          {
+            'quizzes': quizMap,
+          },
+        );
+
+        return Response.ok(response);
+      }
+    });
+
     return createHandler(router: router, middlewares: middlewares);
   }
 }

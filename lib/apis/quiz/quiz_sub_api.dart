@@ -75,4 +75,25 @@ class QuizSubApi {
       rethrow;
     }
   }
+
+  Future<List<QuizResult>> getQuizResultsUser({
+    required Request request,
+  }) async {
+    try {
+      final queryParams = request.url.queryParameters;
+
+      final mapFields = MapFields.load(queryParams);
+
+      final idQuiz = mapFields.getString('id_quiz');
+
+      final idUser = mapFields.getString('id_user');
+
+      final result = await (quizUserService as QuizSubService)
+          .getAllQuizResultsUser(idQuiz, idUser);
+
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -261,6 +261,39 @@ class QuizSubService implements GenericService<QuizDefaultModel> {
     } catch (e) {
       rethrow;
     }
-    return [];
+  }
+
+  Future<List<QuizResult>> getAllQuizResultsUser(
+      String idQuiz, String idUser) async {
+    try {
+      final response = await _client.get(
+        '/quizzes/result/user',
+        queryParameters: {
+          'id_quiz': idQuiz,
+          'id_user': idUser,
+        },
+      );
+
+      final mapFields = MapFields.load(response);
+
+      final listResults =
+          mapFields.getList<Map<String, dynamic>>('quiz_header');
+
+      final listQuizResults = listResults
+          .map(
+            (result) => QuizResult.fromMap(result),
+          )
+          .toList();
+
+      return listQuizResults;
+    } on ClientError {
+      rethrow;
+    } on MapFieldsError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
