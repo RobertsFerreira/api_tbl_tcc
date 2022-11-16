@@ -9,6 +9,7 @@ class NewApelacaoModel extends ApelacaoDefault {
     required super.idCompany,
     required super.idQuiz,
     required super.apelacao,
+    required super.date,
   });
 
   NewApelacaoModel copyWith({
@@ -24,6 +25,7 @@ class NewApelacaoModel extends ApelacaoDefault {
       idCompany: idCompany ?? this.idCompany,
       idQuiz: idQuiz ?? this.idQuiz,
       apelacao: apelacao ?? this.apelacao,
+      date: date ?? date,
     );
   }
 
@@ -35,6 +37,7 @@ class NewApelacaoModel extends ApelacaoDefault {
       idCompany: mapFields.getString('id_company'),
       idQuiz: mapFields.getString('id_quiz'),
       apelacao: mapFields.getString('apelacao'),
+      date: mapFields.getDateTime('date', DateTime.now()),
     );
   }
 
