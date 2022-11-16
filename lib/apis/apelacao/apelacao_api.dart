@@ -40,7 +40,11 @@ class ApelacaoApi extends Api {
             )
             .toList();
 
-        return Response.ok(jsonEncode(apelacoesMap));
+        final response = {
+          'apelacoes': apelacoesMap,
+        };
+
+        return Response.ok(jsonEncode(response));
       },
     );
 
