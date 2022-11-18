@@ -10,3 +10,6 @@ Content-Type: application/json
         "apelacao": "teste"
     }
 }
+
+###
+GET http://localhost:17000/apelacao?data=2022-11-16&id_quiz=6d29193f-ad2c-48b7-a914-baf2ed896c91

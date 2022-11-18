@@ -1,3 +1,5 @@
+import 'package:api_tbl_tcc/models/apelacao/apelacao_model.dart';
+import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/interfaces/clients/http_client.dart';
@@ -20,9 +22,103 @@ class ApelacaoService implements GenericService<ApelacaoDefault> {
   }
 
   @override
-  Future<List<ApelacaoDefault>> get({String? idCompany}) {
-    // TODO: implement get
-    throw UnimplementedError();
+  Future<List<ApelacaoDefault>> get({
+    String? idCompany,
+    DateTime? date,
+    String? idQuiz,
+  }) async {
+    List<ApelacaoModel> apelacoes = [];
+    try {
+      if (date == null) {
+        throw UnknownError(
+          message: 'Data não pode ser nula',
+        );
+      }
+
+      if (idQuiz == null) {
+        throw UnknownError(
+          message: 'Id do quiz não pode ser nulo',
+        );
+      }
+
+      final params = {
+        'data': date.toDateHasura(),
+        'id_quiz': idQuiz,
+      };
+
+      final result = await _client.get(
+        'apelacao',
+        queryParameters: params,
+      );
+
+      final map = MapFields.load(result);
+
+      final listApelacao = map.getList<Map<String, dynamic>>('apelacao');
+
+      final apelacoesModels = listApelacao
+          .map((apelacao) => ApelacaoModel.fromMap(apelacao))
+          .toList();
+
+      apelacoes = apelacoesModels;
+    } on MapFieldsError {
+      rethrow;
+    } on ClientError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return (apelacoes as List<ApelacaoDefault>);
+  }
+
+  Future<List<ApelacaoModel>> getApelacao({
+    DateTime? date,
+    String? idQuiz,
+  }) async {
+    List<ApelacaoModel> apelacoes = [];
+    try {
+      if (date == null) {
+        throw UnknownError(
+          message: 'Data não pode ser nula',
+        );
+      }
+
+      if (idQuiz == null) {
+        throw UnknownError(
+          message: 'Id do quiz não pode ser nulo',
+        );
+      }
+
+      final params = {
+        'data': date.toDateHasura(),
+        'id_quiz': idQuiz,
+      };
+
+      final result = await _client.get(
+        'apelacao',
+        queryParameters: params,
+      );
+
+      final map = MapFields.load(result);
+
+      final listApelacao = map.getList<Map<String, dynamic>>('apelacao');
+
+      final apelacoesModels = listApelacao
+          .map((apelacao) => ApelacaoModel.fromMap(apelacao))
+          .toList();
+
+      apelacoes = apelacoesModels;
+    } on MapFieldsError {
+      rethrow;
+    } on ClientError {
+      rethrow;
+    } on UnknownError {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return apelacoes;
   }
 
   @override

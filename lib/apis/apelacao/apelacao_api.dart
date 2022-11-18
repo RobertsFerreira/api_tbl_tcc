@@ -8,6 +8,7 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../../core/interfaces/generic_service/generic_service.dart';
 import '../../models/apelacao/new_apelacao_model.dart';
+import '../../services/apelacao/apelacao_service.dart';
 
 class ApelacaoApi extends Api {
   final GenericService<ApelacaoDefault> apelacaoService;
@@ -17,6 +18,35 @@ class ApelacaoApi extends Api {
   @override
   Handler getHandler({List<Middleware>? middlewares}) {
     final router = Router();
+
+    router.get(
+      '/apelacao',
+      (Request request) async {
+        final params = request.url.queryParameters;
+
+        final maps = MapFields.load(params);
+
+        final date = maps.getDateTime('data');
+        final idQuiz = maps.getString('id_quiz');
+
+        final result = await (apelacaoService as ApelacaoService).getApelacao(
+          date: date,
+          idQuiz: idQuiz,
+        );
+
+        final apelacoesMap = result
+            .map(
+              (apelacao) => (apelacao).toMap(),
+            )
+            .toList();
+
+        final response = {
+          'apelacoes': apelacoesMap,
+        };
+
+        return Response.ok(jsonEncode(response));
+      },
+    );
 
     router.post(
       '/apelacao',

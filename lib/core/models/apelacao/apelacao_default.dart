@@ -4,6 +4,7 @@ class ApelacaoDefault {
   final String idCompany;
   final String idQuiz;
   final String apelacao;
+  final DateTime? date;
 
   ApelacaoDefault({
     required this.idGroup,
@@ -11,5 +12,6 @@ class ApelacaoDefault {
     required this.idCompany,
     required this.idQuiz,
     required this.apelacao,
+    required this.date,
   });
 }

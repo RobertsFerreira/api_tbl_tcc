@@ -106,7 +106,11 @@ class GroupService implements GenericService<GroupDefault> {
         },
       );
 
-      return HelperHasura.returnResponseBool(response, 'insert_users_groups');
+      return HelperHasura.returnResponseBool(
+        response,
+        'insert_users_groups',
+        multipleAffectedRows: true,
+      );
     } on ClientError {
       rethrow;
     } on MapFieldsError {
