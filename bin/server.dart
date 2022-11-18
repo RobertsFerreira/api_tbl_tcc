@@ -1,6 +1,7 @@
 import 'package:api_tbl_tcc/export/export_functions.dart';
 import 'package:map_fields/map_fields.dart';
 import 'package:shelf/shelf.dart';
+import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
 Future<void> main() async {
   MapFieldsSettings.instance.setLanguage(MapFieldsLanguages.ptBr);
@@ -12,6 +13,11 @@ Future<void> main() async {
 
   print('lsof -w -n -i tcp:"$port" para Linux');
   print('kill -9 PID para Linux');
+
+  final overrideHeaders = {
+    ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+    'Content-Type': 'application/json;charset=utf-8'
+  };
 
   final i = Injects.init();
 
@@ -27,6 +33,7 @@ Future<void> main() async {
 
   var handler = Pipeline()
       .addMiddleware(logRequests())
+      .addMiddleware(corsHeaders(headers: overrideHeaders))
       .addMiddleware(MiddlewareInterceptor.middleware)
       .addHandler(cascadeHandler);
 
