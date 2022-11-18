@@ -1,3 +1,4 @@
+import 'package:api_tbl_tcc/utils/hasura/helper_extensions.dart';
 import 'package:map_fields/map_fields.dart';
 
 import '../../core/models/apelacao/apelacao_default.dart';
@@ -48,6 +49,7 @@ class NewApelacaoModel extends ApelacaoDefault {
       'id_company': idCompany,
       'id_quiz': idQuiz,
       'apelacao': apelacao,
+      'data': date!.toDateHasuraWithoutTime()
     };
   }
 }
